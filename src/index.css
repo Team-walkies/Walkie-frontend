@@ -1,0 +1,106 @@
+/* 🎨 색상 변수 정의 */
+:root {
+  /* Gray Scale */
+  --gray-50: #f9f8fa;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #dcdcf4;
+  --gray-400: #9ca1ab;
+  --gray-500: #737882;
+  --gray-600: #545963;
+  --gray-700: #383c44;
+  --gray-800: #2b2e36;
+  --gray-900: #1e2127;
+  --black: #000000;
+
+  /* Blue */
+  --blue-30: #f0f8fd;
+  --blue-50: #eaf4fb;
+  --blue-100: #b7e5ff;
+  --blue-200: #70cfff;
+  --blue-300: #0daeff;
+  --blue-400: #0091da;
+  --blue-500: #00839a;
+
+  /* Red */
+  --red-100: #ff6d6d;
+
+  /* Orange */
+  --orange-100: #f9af37;
+  --orange-300: #d28800;
+
+  /* Yellow */
+  --yellow-100: #fee500;
+  --yellow-200: #f0c507;
+
+  /* Green */
+  --green-50: #b2edd3;
+  --green-100: #5fcc9b;
+  --green-200: #49c06b;
+  --green-300: #00942a;
+
+  /* Purple */
+  --purple-100: #9393ed;
+  --purple-200: #6b6be0;
+  --purple-300: #5309a8;
+}
+
+h1 {
+  font-size: 48px;
+  line-height: 58px;
+  font-weight: 800; /* ExtraBold */
+}
+
+h2 {
+  font-size: 24px;
+  line-height: 34px;
+  font-weight: 700; /* Bold */
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 700; /* Bold */
+}
+
+h4 {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 700; /* Bold */
+}
+
+h5 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700; /* Bold */
+}
+
+h6 {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700; /* Bold */
+}
+
+.b1 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500; /* Medium */
+}
+
+.b2 {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500; /* Medium */
+}
+
+.c1 {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500; /* Medium */
+}
+
+.c2 {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 500; /* Medium */
+}
