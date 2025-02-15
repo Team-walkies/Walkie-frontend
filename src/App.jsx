@@ -4,6 +4,7 @@ import MapPages from "./routes/MapPages";
 import "./App.css";
 import { theme } from "./utils/theme";
 import styled, { ThemeProvider } from "styled-components";
+import { APIProvider } from "@vis.gl/react-google-maps";
 
 // const Heading = styled.h1`
 //   font-size: ${(props) => props.theme.fontSizes.h1};
@@ -21,15 +22,21 @@ import styled, { ThemeProvider } from "styled-components";
 
 function App() {
   const [count, setCount] = useState(0);
+  let apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <div>hello</div>
-        <Routes>
-          <Route path="/" element={<MapPages />} />
-        </Routes>
-      </ThemeProvider>
+      <APIProvider
+        apiKey={apiKey}
+        onLoad={() => console.log("Maps API has loaded.")}
+      >
+        <ThemeProvider theme={theme}>
+          <div>hello</div>
+          <Routes>
+            <Route path="/map/*" element={<MapPages />} />
+          </Routes>
+        </ThemeProvider>
+      </APIProvider>
     </>
   );
 }

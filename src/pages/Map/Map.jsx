@@ -5,7 +5,7 @@ const Map = () => {
   return (
     <div>
       Map
-      {/* <GoogleMaps /> */}
+      <GoogleMaps />
     </div>
   );
 };
