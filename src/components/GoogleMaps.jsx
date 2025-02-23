@@ -82,9 +82,20 @@ const GoogleMaps = () => {
       defaultCenter={center}
       defaultZoom={12}
       style={{ width: "100%", height: "400px" }}
+      options={{
+        disableDefaultUI: true, // 🔹 모든 기본 UI 요소 숨김
+        zoomControl: false, // 🔹 확대/축소 버튼 제거
+        fullscreenControl: false, // 🔹 전체 화면 버튼 제거
+        streetViewControl: false, // 🔹 스트리트 뷰 버튼 제거
+        mapTypeControl: false, // 🔹 지도/위성 선택 버튼 제거
+        clickableIcons: false, // 🔹 장소 아이콘 클릭 방지 (가장 중요)
+        // gestureHandling: "none",
+        maxZoom: 20,
+        minZoom: 15,
+      }}
     >
       <PoiMarkers pois={locations} />
-      {/* <Marker position={center} /> */}
+      <Marker position={center} />
     </Map>
   );
 };
