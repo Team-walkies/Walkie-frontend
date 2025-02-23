@@ -24,11 +24,11 @@ const PoiMarkers = (props) => {
       <Circle
         radius={100}
         center={circleCenter}
-        strokeColor={"#0c4cb3"}
+        strokeColor={"#0daeff"}
         strokeOpacity={1}
-        strokeWeight={3}
-        fillColor={"#3b82f6"}
-        fillOpacity={0.3}
+        strokeWeight={0}
+        fillColor={"#0daeff"}
+        fillOpacity={0.15}
       />
       {props.pois.map((poi) => (
         <Marker

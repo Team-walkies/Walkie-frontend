@@ -10,9 +10,11 @@ import {
 
 import PoiMarkers from "./PoiMarkers";
 import UserMarker from "./UserMarker";
+import Header from "./Header";
 
 const GoogleMaps = () => {
-  const [center, setCenter] = useState({ lat: -33.860664, lng: 151.208138 });
+  // const [center, setCenter] = useState({ lat: -33.860664, lng: 151.208138 });
+  const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
   const [heading, setHeading] = useState(0); // 🔄 핸드폰 방향
   const map = useMap();
 
@@ -86,24 +88,27 @@ const GoogleMaps = () => {
   }, [map]);
 
   return (
-    <Map
-      mapId={"91cb6cea28939556"}
-      defaultCenter={center}
-      defaultZoom={15}
-      style={{ width: "100%", height: "400px" }}
-      options={{
-        disableDefaultUI: true,
-        zoomControl: true, // 확대/축소 버튼 활성화
-        maxZoom: 20,
-        minZoom: 15,
-        streetViewControl: false,
-        mapTypeControl: false,
-        clickableIcons: false,
-      }}
-    >
-      <UserMarker center={center} heading={heading} />
-      <PoiMarkers pois={locations} />
-    </Map>
+    <div>
+      <Header map={map} center={center} />
+      <Map
+        mapId={"91cb6cea28939556"}
+        defaultCenter={center}
+        defaultZoom={15}
+        style={{ width: "100%", height: "400px" }}
+        options={{
+          disableDefaultUI: true,
+          zoomControl: true, // 확대/축소 버튼 활성화
+          maxZoom: 20,
+          minZoom: 15,
+          streetViewControl: false,
+          mapTypeControl: false,
+          clickableIcons: false,
+        }}
+      >
+        <UserMarker center={center} heading={heading} />
+        <PoiMarkers pois={locations} />
+      </Map>
+    </div>
   );
 };
 
