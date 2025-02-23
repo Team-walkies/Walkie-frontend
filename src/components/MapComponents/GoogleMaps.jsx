@@ -8,9 +8,33 @@ import {
   useMap,
 } from "@vis.gl/react-google-maps";
 
+import myloc from "../../assets/icons/toMyLoc.png";
 import PoiMarkers from "./PoiMarkers";
 import UserMarker from "./UserMarker";
 import Header from "./Header";
+import styled from "styled-components";
+
+const ToCurrent = styled.div`
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  top: 12px;
+  right: 24px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 30;
+  box-shadow:
+    0px 4px 6px rgba(0, 0, 0, 0.1),
+    0px 1px 3px rgba(0, 0, 0, 0.08);
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+`;
 
 const GoogleMaps = () => {
   // const [center, setCenter] = useState({ lat: -33.860664, lng: 151.208138 });
@@ -90,6 +114,13 @@ const GoogleMaps = () => {
   return (
     <div>
       <Header map={map} center={center} />
+      <ToCurrent
+        onClick={() => {
+          map.panTo(center);
+        }}
+      >
+        <img src={myloc} />
+      </ToCurrent>
       <Map
         mapId={"91cb6cea28939556"}
         defaultCenter={center}

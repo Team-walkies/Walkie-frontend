@@ -1,4 +1,14 @@
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 44px;
+  background-color: white;
+`;
 
 const Header = ({ map, center }) => {
   const [curLocation, setCurLocation] = useState("");
@@ -39,7 +49,11 @@ const Header = ({ map, center }) => {
     return () => clearInterval(interval);
   }, []);
 
-  return <div>{curLocation}</div>;
+  return (
+    <Wrapper>
+      <h6>{curLocation}</h6>
+    </Wrapper>
+  );
 };
 
 export default Header;
