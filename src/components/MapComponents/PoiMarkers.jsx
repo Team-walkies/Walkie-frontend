@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useMap, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
+import { useMap, AdvancedMarker, Pin, Marker } from "@vis.gl/react-google-maps";
 import Circle from "./Circle";
 
 const PoiMarkers = (props) => {
@@ -7,12 +7,13 @@ const PoiMarkers = (props) => {
   const [circleCenter, setCircleCenter] = useState(null);
 
   const handleClick = useCallback(
-    (ev) => {
+    (ev, poiKey) => {
       if (!map) return;
       if (!ev.latLng) return;
 
       setCircleCenter(ev.latLng);
       console.log("marker clicked:", ev.latLng.toString());
+      console.log("POI Key:", poiKey);
       map.panTo(ev.latLng);
     },
     [map]
@@ -30,21 +31,17 @@ const PoiMarkers = (props) => {
         fillOpacity={0.3}
       />
       {props.pois.map((poi) => (
-        <AdvancedMarker
+        <Marker
           key={poi.key}
           position={poi.location}
           clickable={true}
-          onClick={(ev) => {
-            handleClick(ev);
-            console.log(poi.key);
+          onClick={(ev) => handleClick(ev, poi.key)}
+          icon={{
+            url: "/assets/ic_MapIcon.png",
+            scaledSize: new window.google.maps.Size(40, 40),
+            anchor: new window.google.maps.Point(20, 20),
           }}
-        >
-          <Pin
-            background={"#FBBC04"}
-            glyphColor={"#000"}
-            borderColor={"#000"}
-          />
-        </AdvancedMarker>
+        />
       ))}
     </>
   );

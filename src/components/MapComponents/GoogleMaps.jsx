@@ -9,6 +9,7 @@ import {
 } from "@vis.gl/react-google-maps";
 
 import PoiMarkers from "./PoiMarkers";
+import UserMarker from "./UserMarker";
 
 const GoogleMaps = () => {
   const [center, setCenter] = useState({ lat: -33.860664, lng: 151.208138 });
@@ -84,20 +85,6 @@ const GoogleMaps = () => {
     };
   }, [map]);
 
-  // 🔄 현재 위치를 나타내는 마커 (방향 반영)
-  const UserMarker = () => (
-    <AdvancedMarker position={center}>
-      <Pin
-        background={"#4285F4"} // 🔵 파란색 (현재 위치)
-        glyphColor={"#fff"}
-        borderColor={"#000"}
-        style={{
-          transform: `rotate(${heading}deg)`, // 🔄 핸드폰 방향 적용
-        }}
-      />
-    </AdvancedMarker>
-  );
-
   return (
     <Map
       mapId={"91cb6cea28939556"}
@@ -114,7 +101,7 @@ const GoogleMaps = () => {
         clickableIcons: false,
       }}
     >
-      <UserMarker />
+      <UserMarker center={center} heading={heading} />
       <PoiMarkers pois={locations} />
     </Map>
   );
