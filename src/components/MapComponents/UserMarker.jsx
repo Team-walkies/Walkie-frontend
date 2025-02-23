@@ -1,15 +1,44 @@
-import { AdvancedMarker, Marker, Pin } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, Marker } from "@vis.gl/react-google-maps";
 
-const UserMarker = ({ center, heading }) => (
-  <Marker
-    position={center}
-    clickable={true}
-    icon={{
-      url: "/assets/myPosition.png",
-      scaledSize: new window.google.maps.Size(40, 40),
-      anchor: new window.google.maps.Point(20, 20),
-    }}
-  />
-);
+const UserMarker = ({ center, heading }) => {
+  return (
+    <>
+      <Marker
+        position={center}
+        clickable={true}
+        icon={{
+          url: "/assets/myPosition.png",
+          scaledSize: new window.google.maps.Size(40, 40),
+          anchor: new window.google.maps.Point(20, 20),
+        }}
+      />
+
+      {/*  바라보는 방향  */}
+      <AdvancedMarker position={center}>
+        <div
+          style={{
+            width: "0px",
+            height: "0px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            transform: `rotate(${heading}deg)`,
+          }}
+        >
+          <img
+            src="/assets/dir.png"
+            alt="direction"
+            style={{
+              width: "17px",
+              height: "15px",
+              position: "relative",
+              top: "-20px",
+            }}
+          />
+        </div>
+      </AdvancedMarker>
+    </>
+  );
+};
 
 export default UserMarker;
