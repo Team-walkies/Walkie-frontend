@@ -13,6 +13,7 @@ import PoiMarkers from "./PoiMarkers";
 import UserMarker from "./UserMarker";
 import Header from "./Header";
 import styled from "styled-components";
+import BottomSheet from "../UI/BottomSheet";
 
 const ToCurrent = styled.div`
   justify-self: end;
@@ -142,6 +143,7 @@ const GoogleMaps = () => {
 
   return (
     <div>
+      <BottomSheet />
       <Header map={map} center={center} />
       <InfoBox>
         <BlackInfo>
@@ -149,7 +151,7 @@ const GoogleMaps = () => {
             1시간내 거리
           </span>
           <span className="c1" style={{ color: "var(--blue-200)" }}>
-            8개
+            {locations.length}개
           </span>
         </BlackInfo>
       </InfoBox>
