@@ -31,7 +31,6 @@ function App() {
         onLoad={() => console.log("Maps API has loaded.")}
       >
         <ThemeProvider theme={theme}>
-          <div>Walkie</div>
           <Routes>
             <Route path="/map/*" element={<MapPages />} />
           </Routes>

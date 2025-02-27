@@ -5,9 +5,11 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: auto;
+  width: 100%;
   height: 44px;
   background-color: white;
+  position: absolute;
+  z-index: 20;
 `;
 
 const Header = ({ map, center }) => {

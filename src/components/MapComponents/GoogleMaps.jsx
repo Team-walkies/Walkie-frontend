@@ -15,15 +15,17 @@ import Header from "./Header";
 import styled from "styled-components";
 
 const ToCurrent = styled.div`
+  justify-self: end;
   width: 40px;
   height: 40px;
-  position: fixed;
-  top: 12px;
-  right: 24px;
+  position: absolute;
+  right: 16px;
+  top: 48px;
   background-color: white;
   border-radius: 50%;
   display: flex;
   justify-content: center;
+
   align-items: center;
   z-index: 30;
   box-shadow:
@@ -35,7 +37,34 @@ const ToCurrent = styled.div`
     height: 24px;
   }
 `;
+const InfoBox = styled.div`
+  position: absolute;
+  top: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+`;
 
+const MapContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* 화면 전체 높이 */
+`;
+
+const BlackInfo = styled.div`
+  background-color: ${(props) => props.theme.colors.gray700};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 20px;
+  border-radius: 99px;
+`;
 const GoogleMaps = () => {
   // const [center, setCenter] = useState({ lat: -33.860664, lng: 151.208138 });
   const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
@@ -114,31 +143,44 @@ const GoogleMaps = () => {
   return (
     <div>
       <Header map={map} center={center} />
-      <ToCurrent
-        onClick={() => {
-          map.panTo(center);
-        }}
-      >
-        <img src={myloc} />
+      <InfoBox>
+        <BlackInfo>
+          <span className="c1" style={{ color: "var(--gray-50)" }}>
+            1시간내 거리
+          </span>
+          <span className="c1" style={{ color: "var(--blue-200)" }}>
+            8개
+          </span>
+        </BlackInfo>
+      </InfoBox>
+
+      <ToCurrent onClick={() => map.panTo(center)}>
+        <img src={myloc} alt="현재 위치로 이동" />
       </ToCurrent>
-      <Map
-        mapId={"91cb6cea28939556"}
-        defaultCenter={center}
-        defaultZoom={15}
-        style={{ width: "100%", height: "400px" }}
-        options={{
-          disableDefaultUI: true,
-          zoomControl: true, // 확대/축소 버튼 활성화
-          maxZoom: 20,
-          minZoom: 15,
-          streetViewControl: false,
-          mapTypeControl: false,
-          clickableIcons: false,
-        }}
-      >
-        <UserMarker center={center} heading={heading} />
-        <PoiMarkers pois={locations} />
-      </Map>
+
+      <MapContainer>
+        <Map
+          mapId={"91cb6cea28939556"}
+          defaultCenter={center}
+          defaultZoom={15}
+          style={{ width: "100%", height: "100%" }} // 💡 높이를 전체로
+          options={{
+            disableDefaultUI: true,
+            zoomControl: true,
+            maxZoom: 20,
+            minZoom: 15,
+            streetViewControl: false,
+            mapTypeControl: false,
+            clickableIcons: false,
+            gestureHandling: "greedy",
+            // streetViewControl: false, // 스트리트 뷰 제거
+            zoomControl: false, // 확대/축소 버튼 제거
+          }}
+        >
+          <UserMarker center={center} heading={heading} />
+          <PoiMarkers pois={locations} />
+        </Map>
+      </MapContainer>
     </div>
   );
 };
