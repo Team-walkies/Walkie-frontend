@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: auto;
+  height: calc(100% - 44px);
   z-index: 100;
   box-shadow:
     0px 4px 26px rgba(0, 0, 0, 0.1),
@@ -172,7 +172,7 @@ const BottomSheet = () => {
         <div style={{ padding: "20px 16px" }}>
           <h5>사진 3</h5>
           <ImgWrap>
-            <div>
+            <div style={{ display: "flex", gap: "4px" }}>
               <img src="/assets/photo1.jpg" />
               <img src="/assets/photo1.jpg" />
               <img src="/assets/photo1.jpg" />

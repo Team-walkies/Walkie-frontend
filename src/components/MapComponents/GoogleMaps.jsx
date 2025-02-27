@@ -14,6 +14,7 @@ import UserMarker from "./UserMarker";
 import Header from "./Header";
 import styled from "styled-components";
 import BottomSheet from "../UI/BottomSheet";
+import PoiMarker from "./PoiMarker";
 
 const ToCurrent = styled.div`
   justify-self: end;
@@ -70,6 +71,8 @@ const GoogleMaps = () => {
   // const [center, setCenter] = useState({ lat: -33.860664, lng: 151.208138 });
   const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
   const [heading, setHeading] = useState(0); // 🔄 핸드폰 방향
+  const [selected, setSelected] = useState("");
+
   const map = useMap();
 
   const locations = [
@@ -143,7 +146,9 @@ const GoogleMaps = () => {
 
   return (
     <div>
-      <BottomSheet />
+      {/* <BottomSheet /> */}
+
+      {/* 상단 정보 */}
       <Header map={map} center={center} />
       <InfoBox>
         <BlackInfo>
@@ -160,6 +165,7 @@ const GoogleMaps = () => {
         <img src={myloc} alt="현재 위치로 이동" />
       </ToCurrent>
 
+      {/* 지도 */}
       <MapContainer>
         <Map
           mapId={"91cb6cea28939556"}
@@ -180,7 +186,11 @@ const GoogleMaps = () => {
           }}
         >
           <UserMarker center={center} heading={heading} />
-          <PoiMarkers pois={locations} />
+          {/* <PoiMarkers pois={locations} /> */}
+          {locations.map((loc, i) => {
+            console.log(loc);
+            return <PoiMarker key={loc.key} location={loc.location} />;
+          })}
         </Map>
       </MapContainer>
     </div>
