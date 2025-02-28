@@ -38,14 +38,14 @@ const MapContainer = styled.div`
 `;
 
 const WalkMaps = ({ destination }) => {
-  // 티맵 API 키
   const tmapApiKey = import.meta.env.VITE_TMAP_API_KEY;
 
   const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
-  const [heading, setHeading] = useState(0); // 핸드폰 방향
-  const [directions, setDirections] = useState(null); // 경로 저장 상태
-  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false); // Google Maps 로드 상태
+  const [heading, setHeading] = useState(0);
+  const [directions, setDirections] = useState(null);
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
   const [selected, setSelected] = useState("");
+  const [route, setRoute] = useState([]);
 
   const map = useMap();
 
@@ -88,63 +88,83 @@ const WalkMaps = ({ destination }) => {
           { enableHighAccuracy: true }
         );
       } else {
-        alert("Geolocation이 지원되지 않습니다.");
+        alert("Geolocation is not supported.");
       }
     }
   }, [isGoogleLoaded, map]);
 
   useEffect(() => {
-    if (center && destination && isGoogleLoaded) {
-      const fetchTmapRoute = async () => {
-        console.log(
-          `startX: ${center.lng.toFixed(6)}, startY: ${center.lat.toFixed(6)}`
-        );
-        console.log(
-          `endX: ${destination.lng.toFixed(6)}, endY: ${destination.lat.toFixed(6)}`
-        );
-        console.log(
-          `https://apis.openapi.sk.com/tmap/routes?version=1&format=json&appKey=${tmapApiKey}&startX=${center.lng.toFixed(6)}&startY=${center.lat.toFixed(6)}&endX=${destination.lng.toFixed(6)}&endY=${destination.lat.toFixed(6)}&reqCoordType=WGS84GEO&resCoordType=WGS84GEO&angle=0&trafficInfo=false`
-        );
+    if (center && destination) {
+      const fetchTmapPedestrianRoute = async () => {
+        const startX = center.lng.toFixed(6);
+        const startY = center.lat.toFixed(6);
+        const endX = destination.lng.toFixed(6);
+        const endY = destination.lat.toFixed(6);
 
-        const origin = `${center.lng},${center.lat}`; // 경도, 위도 순으로 수정
-        const dest = `${destination.lng},${destination.lat}`; // 경도, 위도 순으로 수정
+        const apiUrl = `https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1`;
+
+        const requestBody = {
+          startX: startX,
+          startY: startY,
+          endX: endX,
+          endY: endY,
+          reqCoordType: "WGS84GEO", // 기본 좌표계 설정
+          resCoordType: "WGS84GEO", // 응답 좌표계 설정
+          angle: 0, // 각도 (기본값 0)
+          speed: 10, // 진행 속도 (기본값 10 km/h)
+          searchOption: 0, // 경로 탐색 옵션 (기본값 0)
+          startName: encodeURIComponent("출발지"), // 출발지 이름 URL 인코딩
+          endName: encodeURIComponent("목적지"), // 목적지 이름 URL 인코딩
+          sort: "index", // 정렬 옵션 (기본값 index)
+        };
 
         try {
-          const response = await fetch(
-            `https://apis.openapi.sk.com/tmap/routes?version=1&format=json&appKey=${tmapApiKey}&startX=${center.lng.toFixed(6)}&startY=${center.lat.toFixed(6)}&endX=${destination.lng.toFixed(6)}&endY=${destination.lat.toFixed(6)}&reqCoordType=WGS84GEO&resCoordType=WGS84GEO&angle=0&trafficInfo=false`
-          );
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json", // 요청 데이터 형식
+              Accept: "application/json", // 응답 형식 설정
+              appKey: tmapApiKey, // 앱키 추가
+            },
+            body: JSON.stringify(requestBody),
+          });
           const data = await response.json();
-          if (data && data.features && data.features.length > 0) {
-            const route = data.features[0].geometry.coordinates;
-            setDirections(route);
-          } else {
-            console.error("티맵 경로를 가져오는 데 실패했습니다.");
+          console.log("Tmap API response:", data);
+
+          if (data.features && data.features.length > 0) {
+            const routePath = data.features
+              .filter((feature) => feature.geometry.type === "LineString")
+              .map((feature) => feature.geometry.coordinates);
+
+            setRoute(routePath); // 경로 정보 저장
           }
         } catch (error) {
-          console.error("티맵 API 호출 중 오류 발생:", error);
+          console.error("Error fetching Tmap pedestrian route:", error);
         }
       };
 
-      fetchTmapRoute();
+      fetchTmapPedestrianRoute();
     }
-  }, [center, destination, isGoogleLoaded]);
+  }, [center, destination]);
 
   useEffect(() => {
-    if (directions && map) {
-      const polyline = new google.maps.Polyline({
-        path: directions.map((coord) => ({
-          lat: coord[1], // 위도
-          lng: coord[0], // 경도
-        })),
-        geodesic: true,
-        strokeColor: "#FF0000",
-        strokeOpacity: 1.0,
-        strokeWeight: 2,
-      });
+    console.log("route", route);
+    if (route.length > 0 && map) {
+      // 경로를 Polyline으로 지도에 추가
+      route.forEach((coordinates) => {
+        const path = coordinates.map(([lng, lat]) => ({ lat, lng }));
+        const polyline = new window.google.maps.Polyline({
+          path,
+          geodesic: true,
+          strokeColor: "#70cfff",
+          strokeOpacity: 0.3,
+          strokeWeight: 5,
+        });
 
-      polyline.setMap(map);
+        polyline.setMap(map); // 경로를 지도에 추가
+      });
     }
-  }, [directions, map]);
+  }, [route, map]);
 
   const handleMapClick = () => {
     setSelected(null);
@@ -155,7 +175,7 @@ const WalkMaps = ({ destination }) => {
       <Header map={map} center={center} />
 
       <ToCurrent onClick={() => map.panTo(center)}>
-        <img src={myloc} alt="현재 위치로 이동" />
+        <img src={myloc} alt="Move to current location" />
       </ToCurrent>
 
       <MapContainer>
