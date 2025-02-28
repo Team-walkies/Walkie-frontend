@@ -136,7 +136,7 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
         geocoder.geocode({ location: latlng }, (result, status) => {
           if (status == "OK") {
             setCurLocation(
-              result[0].address_components[3].short_name +
+              result[0].address_components[3]?.short_name +
                 " " +
                 result[0].address_components[2].short_name +
                 " " +
