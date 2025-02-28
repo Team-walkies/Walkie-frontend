@@ -1,31 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import reviewIcon from "../../assets/icons/ic_review.png";
 import exploreIcon from "../../assets/icons/ic_explore.png";
 import visitorsIcon from "../../assets/icons/ic_visitors.png";
+import { motion } from "framer-motion";
+import useBottomSheet from "../../hooks/useBottomSheet";
+import { MIN_Y, MAX_Y, BOTTOM_SHEET_HEIGHT } from "../../utils/btmSheetConfig";
 
-// 전체 바텀시트
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   background-color: white;
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: calc(100% - 44px);
+  height: ${MAX_Y}px;
   z-index: 100;
+  /* top: ${({ isOpen }) => (isOpen ? `${MIN_Y}px` : "382px")}; */
   box-shadow:
     0px 4px 26px rgba(0, 0, 0, 0.1),
     0px 1px 3px rgba(0, 0, 0, 0.08);
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
+  transition: height 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
 `;
 
-// 위쪽 스와이프 바
-const Swipe = styled.div`
+const Handle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 28px;
+  min-height: 28px;
+  cursor: pointer;
 
   div {
     width: 44px;
@@ -35,13 +42,13 @@ const Swipe = styled.div`
   }
 `;
 
-// 콘텐츠 래퍼
 const ContentWrap = styled.div`
+  flex-grow: 1;
   padding: 20px 16px;
   align-items: center;
+  overflow-y: auto;
 `;
 
-// 장소 정보 섹션
 const Info = styled.div`
   display: flex;
   flex-direction: column;
@@ -50,7 +57,6 @@ const Info = styled.div`
   gap: 4px;
 `;
 
-// 아이콘 섹션
 const Middle = styled.div`
   padding: 20px 0;
   width: 100%;
@@ -75,7 +81,6 @@ const MiddleBox = styled.div`
   }
 `;
 
-// 사진 섹션 (가로 스크롤 가능)
 const ImgWrap = styled.div`
   overflow-x: auto;
   white-space: nowrap;
@@ -92,7 +97,6 @@ const ImgWrap = styled.div`
   }
 `;
 
-// 리뷰 전체 감싸는 div
 const ReviewWrap = styled.div`
   padding: 20px 16px;
   padding-top: 0px;
@@ -101,7 +105,6 @@ const ReviewWrap = styled.div`
   gap: 8px;
 `;
 
-// 리뷰 한 개 박스
 const ReviewBox = styled.div`
   background-color: var(--gray-50);
   border-radius: 12px;
@@ -111,24 +114,32 @@ const ReviewBox = styled.div`
   gap: 8px;
 `;
 
-// 블루 버튼
 const BlueBtn = styled.button`
-  width: 100%;
+  width: calc(100%-32px);
   background-color: ${(props) => props.theme.colors.blue300};
   padding: 15px 0;
+  margin: 0px 10px;
+  margin-bottom: 34px;
   border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
+  color: white;
+  position: sticky;
+  bottom: 0;
+  left: 0;
 `;
 
-const BottomSheet = () => {
+const BottomSheet = ({ name, location, closeFn }) => {
+  const [expanded, setExpanded] = useState(false);
+  const { sheet } = useBottomSheet();
+
   return (
-    <Wrapper>
-      <Swipe>
+    <Wrapper expanded={expanded} ref={sheet}>
+      <Handle onClick={() => setExpanded(!expanded)}>
         <div></div>
-      </Swipe>
+      </Handle>
       <ContentWrap>
         <Info>
           <h3>낙산공원</h3>
@@ -147,24 +158,18 @@ const BottomSheet = () => {
         <Middle>
           <MiddleBox>
             <img src={visitorsIcon} alt="방문객" />
-            <span className="b2" style={{ color: "var(--gray-700)" }}>
-              방문자
-            </span>
-            <h6 style={{ color: "var(--gray-700)" }}>32명</h6>
+            <span className="b2">방문자</span>
+            <h6>32명</h6>
           </MiddleBox>
           <MiddleBox>
             <img src={reviewIcon} alt="리뷰" />
-            <span className="b2" style={{ color: "var(--gray-700)" }}>
-              리뷰
-            </span>
-            <h6 style={{ color: "var(--gray-700)" }}>5개</h6>
+            <span className="b2">리뷰</span>
+            <h6>5개</h6>
           </MiddleBox>
           <MiddleBox>
             <img src={exploreIcon} alt="탐색" />
-            <span className="b2" style={{ color: "var(--gray-700)" }}>
-              나의 탐험
-            </span>
-            <h6 style={{ color: "var(--gray-700)" }}>미완료</h6>
+            <span className="b2">나의 탐험</span>
+            <h6>미완료</h6>
           </MiddleBox>
         </Middle>
 
@@ -208,13 +213,8 @@ const BottomSheet = () => {
             </span>
           </ReviewBox>
         </ReviewWrap>
-
-        <BlueBtn>
-          <span className="b1" style={{ color: "white" }}>
-            출발하기
-          </span>
-        </BlueBtn>
       </ContentWrap>
+      <BlueBtn>출발하기</BlueBtn>
     </Wrapper>
   );
 };

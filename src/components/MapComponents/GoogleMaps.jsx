@@ -106,6 +106,10 @@ const GoogleMaps = () => {
   ];
 
   useEffect(() => {
+    console.log(selected);
+  }, [selected]);
+
+  useEffect(() => {
     // 🌍 현재 위치 가져오기
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
@@ -146,7 +150,12 @@ const GoogleMaps = () => {
 
   return (
     <div>
-      {/* <BottomSheet /> */}
+      {/* {selected ? <BottomSheet closeFn={setSelected} /> : null} */}
+      {/* <BottomSheet
+        name={selected.key}
+        location={selected.location}
+        closeFn={setSelected}
+      /> */}
 
       {/* 상단 정보 */}
       <Header map={map} center={center} />
@@ -187,10 +196,15 @@ const GoogleMaps = () => {
         >
           <UserMarker center={center} heading={heading} />
           {/* <PoiMarkers pois={locations} /> */}
-          {locations.map((loc, i) => {
-            console.log(loc);
-            return <PoiMarker key={loc.key} location={loc.location} />;
-          })}
+          {locations.map((loc) => (
+            <PoiMarker
+              key={loc.key} // React 내부용 key (props로 자동 전달 X)
+              poiKey={loc.key} // key가 전달되지 않으므로 따로 poiKey로 넘겨줌
+              location={loc.location}
+              clickFn={setSelected}
+              map={map}
+            />
+          ))}
         </Map>
       </MapContainer>
     </div>

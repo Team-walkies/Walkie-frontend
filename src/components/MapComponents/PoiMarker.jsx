@@ -1,22 +1,25 @@
 import { useCallback, useState } from "react";
 import { useMap, AdvancedMarker, Pin, Marker } from "@vis.gl/react-google-maps";
 import Circle from "./Circle";
-
-const PoiMarker = ({ key, location }) => {
-  const map = useMap();
+const PoiMarker = ({ map, poiKey, location, clickFn }) => {
+  // key → poiKey로 변경
   const [circleCenter, setCircleCenter] = useState(null);
 
   const handleClick = useCallback(
-    (ev, poiKey) => {
-      if (!map) return;
-      if (!ev.latLng) return;
+    (ev) => {
+      if (!map || !ev.latLng) return;
+
+      const selectedPoi = {
+        key: poiKey, // 수정된 key 사용
+        location: { lat: ev.latLng.lat(), lng: ev.latLng.lng() },
+      };
+
+      clickFn(selectedPoi);
 
       setCircleCenter(ev.latLng);
-      // console.log("marker clicked:", ev.latLng.toString());
-      // console.log("POI Key:", poiKey);
       map.panTo(ev.latLng);
     },
-    [map]
+    [map, poiKey, location, clickFn]
   );
 
   return (
@@ -31,10 +34,9 @@ const PoiMarker = ({ key, location }) => {
         fillOpacity={0.15}
       />
       <Marker
-        key={key}
         position={location}
         clickable={true}
-        onClick={(ev) => handleClick(ev, key)}
+        onClick={handleClick}
         icon={{
           url: "/assets/ic_MapIcon.png",
           scaledSize: new window.google.maps.Size(40, 40),
