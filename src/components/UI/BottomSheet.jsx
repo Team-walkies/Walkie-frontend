@@ -4,6 +4,7 @@ import reviewIcon from "../../assets/icons/ic_review.png";
 import exploreIcon from "../../assets/icons/ic_explore.png";
 import visitorsIcon from "../../assets/icons/ic_visitors.png";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled(motion.div)`
   background-color: white;
@@ -121,6 +122,7 @@ const BlueBtn = styled.button`
   box-sizing: border-box;
 `;
 const BottomSheet = ({ closeFn, name, loc, map }) => {
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const [curLocation, setCurLocation] = useState("");
 
@@ -258,11 +260,13 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
           </div>
         ) : null}
 
-        <BlueBtn>
-          <span className="b1" style={{ color: "white" }}>
-            출발하기
-          </span>
-        </BlueBtn>
+        <div onClick={() => navigate("/map/walk", { state: { loc } })}>
+          <BlueBtn>
+            <span className="b1" style={{ color: "white" }}>
+              출발하기
+            </span>
+          </BlueBtn>
+        </div>
       </ContentWrap>
     </Wrapper>
   );
