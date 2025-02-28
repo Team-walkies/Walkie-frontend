@@ -1,9 +1,23 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useMap, AdvancedMarker, Pin, Marker } from "@vis.gl/react-google-maps";
 import Circle from "./Circle";
 
-const PoiMarker = ({ map, poiKey, location, clickFn, selectedPoiKey }) => {
+const PoiMarker = ({
+  map,
+  poiKey,
+  name,
+  location,
+  clickFn,
+  selectedPoiKey,
+  isDestination,
+}) => {
   const [circleCenter, setCircleCenter] = useState(null);
+
+  // console.log(name);
+
+  useEffect(() => {
+    isDestination ? setCircleCenter(location) : null;
+  }, []);
 
   const handleClick = useCallback(
     (ev) => {
@@ -41,12 +55,12 @@ const PoiMarker = ({ map, poiKey, location, clickFn, selectedPoiKey }) => {
         icon={{
           url: "/assets/ic_MapIcon.png",
           scaledSize: new window.google.maps.Size(
-            isSelected ? 60 : 40,
-            isSelected ? 60 : 40
+            isSelected && !isDestination ? 60 : 40,
+            isSelected && !isDestination ? 60 : 40
           ), // Change size if selected
           anchor: new window.google.maps.Point(
-            isSelected ? 30 : 20,
-            isSelected ? 30 : 20
+            isSelected && !isDestination ? 30 : 20,
+            isSelected && !isDestination ? 30 : 20
           ),
         }}
       />

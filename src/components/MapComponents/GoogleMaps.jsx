@@ -140,9 +140,9 @@ const GoogleMaps = () => {
     };
   }, [map]);
 
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
+  // useEffect(() => {
+  //   console.log(selected);
+  // }, [selected]);
 
   const handleMapClick = () => {
     setSelected(null);
@@ -198,6 +198,7 @@ const GoogleMaps = () => {
           {locations.map((loc) => (
             <PoiMarker
               key={loc.key}
+              name={loc.key}
               poiKey={loc.key}
               location={loc.location}
               clickFn={setSelected}
