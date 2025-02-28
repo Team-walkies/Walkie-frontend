@@ -68,53 +68,46 @@ const BlackInfo = styled.div`
   border-radius: 99px;
 `;
 const GoogleMaps = () => {
-  // const [center, setCenter] = useState({ lat: -33.860664, lng: 151.208138 });
   const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
   const [heading, setHeading] = useState(0); // 🔄 핸드폰 방향
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(null); // selected to hold null initially
 
   const map = useMap();
 
   const locations = [
-    { key: "ilsanLakePark", location: { lat: 37.675418, lng: 126.769645 } }, // 일산 호수공원
-    { key: "kintex", location: { lat: 37.667265, lng: 126.745635 } }, // 킨텍스 (국제 전시장)
-    { key: "lafesta", location: { lat: 37.661486, lng: 126.768109 } }, // 라페스타 쇼핑몰
-    { key: "westernDome", location: { lat: 37.662223, lng: 126.770752 } }, // 웨스턴돔 (맛집 거리)
-    { key: "oneMount", location: { lat: 37.660203, lng: 126.752867 } }, // 원마운트 (워터파크 & 스노우파크)
-    { key: "aquaPlanet", location: { lat: 37.660748, lng: 126.753944 } }, // 아쿠아플라넷 일산
+    { key: "ilsanLakePark", location: { lat: 37.675418, lng: 126.769645 } },
+    { key: "kintex", location: { lat: 37.667265, lng: 126.745635 } },
+    { key: "lafesta", location: { lat: 37.661486, lng: 126.768109 } },
+    { key: "westernDome", location: { lat: 37.662223, lng: 126.770752 } },
+    { key: "oneMount", location: { lat: 37.660203, lng: 126.752867 } },
+    { key: "aquaPlanet", location: { lat: 37.660748, lng: 126.753944 } },
     {
       key: "hyundaiDepartmentStore",
       location: { lat: 37.646979, lng: 126.788208 },
-    }, // 현대백화점 킨텍스점
+    },
     {
       key: "gomsoSaltedShrimpMarket",
       location: { lat: 37.683312, lng: 126.763159 },
-    }, // 고양종합운동장
+    },
     {
       key: "donggukUniversityIlsanHospital",
       location: { lat: 37.673467, lng: 126.780789 },
-    }, // 동국대학교 일산병원
+    },
     {
       key: "hallymUniversityMedicalCenter",
       location: { lat: 37.67606, lng: 126.771648 },
-    }, // 한림대학교 동탄성심병원
-    { key: "goyangCityHall", location: { lat: 37.656364, lng: 126.831722 } }, // 고양시청
-    { key: "jeongbalsanPark", location: { lat: 37.661574, lng: 126.777272 } }, // 정발산공원
-    { key: "hyangdongPark", location: { lat: 37.689079, lng: 126.765995 } }, // 향동공원
-    { key: "pungdongPark", location: { lat: 37.673939, lng: 126.75945 } }, // 풍동공원
-    { key: "nokcheonPark", location: { lat: 37.687542, lng: 126.75369 } }, // 녹천공원
+    },
+    { key: "goyangCityHall", location: { lat: 37.656364, lng: 126.831722 } },
+    { key: "jeongbalsanPark", location: { lat: 37.661574, lng: 126.777272 } },
+    { key: "hyangdongPark", location: { lat: 37.689079, lng: 126.765995 } },
+    { key: "pungdongPark", location: { lat: 37.673939, lng: 126.75945 } },
+    { key: "nokcheonPark", location: { lat: 37.687542, lng: 126.75369 } },
   ];
 
   useEffect(() => {
-    console.log(selected);
-  }, [selected]);
-
-  useEffect(() => {
-    // 🌍 현재 위치 가져오기
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
         (position) => {
-          console.log(position.coords.latitude, position.coords.longitude);
           setCenter({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -132,7 +125,6 @@ const GoogleMaps = () => {
       alert("Geolocation이 지원되지 않습니다.");
     }
 
-    // 📱 핸드폰 방향 감지
     const handleOrientation = (event) => {
       if (event.alpha !== null) {
         setHeading(event.alpha); // 0~360도 (북쪽 기준)
@@ -148,16 +140,25 @@ const GoogleMaps = () => {
     };
   }, [map]);
 
+  useEffect(() => {
+    console.log(selected);
+  }, [selected]);
+
+  const handleMapClick = () => {
+    setSelected(null);
+  };
+
   return (
     <div>
-      {selected ? <BottomSheet closeFn={setSelected} /> : null}
-      {/* <BottomSheet
-        name={selected.key}
-        location={selected.location}
-        closeFn={setSelected}
-      /> */}
+      {selected ? (
+        <BottomSheet
+          closeFn={setSelected}
+          name={selected.key}
+          loc={selected.location}
+          map={map}
+        />
+      ) : null}
 
-      {/* 상단 정보 */}
       <Header map={map} center={center} />
       <InfoBox>
         <BlackInfo>
@@ -174,13 +175,12 @@ const GoogleMaps = () => {
         <img src={myloc} alt="현재 위치로 이동" />
       </ToCurrent>
 
-      {/* 지도 */}
       <MapContainer>
         <Map
           mapId={"91cb6cea28939556"}
           defaultCenter={center}
           defaultZoom={15}
-          style={{ width: "100%", height: "100%" }} // 💡 높이를 전체로
+          style={{ width: "100%", height: "100%" }}
           options={{
             disableDefaultUI: true,
             zoomControl: true,
@@ -190,19 +190,19 @@ const GoogleMaps = () => {
             mapTypeControl: false,
             clickableIcons: false,
             gestureHandling: "greedy",
-            // streetViewControl: false, // 스트리트 뷰 제거
-            zoomControl: false, // 확대/축소 버튼 제거
+            zoomControl: false,
           }}
+          onClick={handleMapClick}
         >
           <UserMarker center={center} heading={heading} />
-          {/* <PoiMarkers pois={locations} /> */}
           {locations.map((loc) => (
             <PoiMarker
-              key={loc.key} // React 내부용 key (props로 자동 전달 X)
-              poiKey={loc.key} // key가 전달되지 않으므로 따로 poiKey로 넘겨줌
+              key={loc.key}
+              poiKey={loc.key}
               location={loc.location}
               clickFn={setSelected}
               map={map}
+              selectedPoiKey={selected ? selected.key : null}
             />
           ))}
         </Map>

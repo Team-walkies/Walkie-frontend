@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import reviewIcon from "../../assets/icons/ic_review.png";
 import exploreIcon from "../../assets/icons/ic_explore.png";
@@ -120,8 +120,50 @@ const BlueBtn = styled.button`
   left: 16px;
   box-sizing: border-box;
 `;
-const BottomSheet = () => {
+const BottomSheet = ({ closeFn, name, loc, map }) => {
   const [expanded, setExpanded] = useState(false);
+  const [curLocation, setCurLocation] = useState("");
+
+  useEffect(() => {
+    console.log(name, loc);
+    const checkGoogleLoaded = () => {
+      if (window.google && window.google.maps && loc) {
+        const geocoder = new window.google.maps.Geocoder();
+        const latlng = { lat: loc.lat, lng: loc.lng };
+
+        geocoder.geocode({ location: latlng }, (result, status) => {
+          if (status == "OK") {
+            console.log(result[0]);
+            console.log(
+              //??시 ??구
+              result[0].address_components[3].short_name +
+                " " +
+                result[0].address_components[2].short_name
+            );
+            setCurLocation(
+              result[0].address_components[3].short_name +
+                " " +
+                result[0].address_components[2].short_name +
+                " " +
+                result[0].address_components[1].short_name +
+                result[0].address_components[0].short_name
+            );
+          } else {
+            console.log(console.error("아직 로드안됨"));
+          }
+        });
+      }
+    };
+
+    const interval = setInterval(() => {
+      if (window.google && window.google.maps) {
+        clearInterval(interval);
+        checkGoogleLoaded();
+      }
+    }, 200);
+
+    return () => clearInterval(interval);
+  }, [loc]);
 
   return (
     <Wrapper expanded={expanded}>
@@ -130,9 +172,9 @@ const BottomSheet = () => {
       </Handle>
       <ContentWrap>
         <Info>
-          <h3>낙산공원</h3>
+          <h3>{name}</h3>
           <h4 className="b2" style={{ color: "var(--gray-400)" }}>
-            서울 종로구 낙산길 41
+            {curLocation}
           </h4>
           <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             <span className="b2">여기서</span>
