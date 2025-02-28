@@ -150,7 +150,7 @@ const GoogleMaps = () => {
 
   return (
     <div>
-      {/* {selected ? <BottomSheet closeFn={setSelected} /> : null} */}
+      {selected ? <BottomSheet closeFn={setSelected} /> : null}
       {/* <BottomSheet
         name={selected.key}
         location={selected.location}
