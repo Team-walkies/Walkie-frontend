@@ -96,10 +96,10 @@ const WalkMaps = ({ destination }) => {
   useEffect(() => {
     if (center && destination) {
       const fetchTmapPedestrianRoute = async () => {
-        const startX = center.lng.toFixed(6);
-        const startY = center.lat.toFixed(6);
-        const endX = destination.lng.toFixed(6);
-        const endY = destination.lat.toFixed(6);
+        const startX = center.lng;
+        const startY = center.lat;
+        const endX = destination.lng;
+        const endY = destination.lat;
 
         const apiUrl = `https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1`;
 
@@ -157,7 +157,7 @@ const WalkMaps = ({ destination }) => {
           path,
           geodesic: true,
           strokeColor: "#70cfff",
-          strokeOpacity: 0.3,
+          strokeOpacity: 1.0,
           strokeWeight: 5,
         });
 
