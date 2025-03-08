@@ -1,28 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import MapPages from "./routes/MapPages";
+import { APIProvider } from "@vis.gl/react-google-maps";
+import { useSetRecoilState } from "recoil";
+import { geolocationState } from "./utils/atoms";
 import "./App.css";
 import { theme } from "./utils/theme";
 import styled, { ThemeProvider } from "styled-components";
-import { APIProvider } from "@vis.gl/react-google-maps";
-
-// const Heading = styled.h1`
-//   font-size: ${(props) => props.theme.fontSizes.h1};
-//   line-height: ${(props) => props.theme.lineHeights.h1};
-//   font-weight: ${(props) => props.theme.fontWeights.extraBold};
-//   color: ${(props) => props.theme.colors.gray900};
-// `;
-
-// const Paragraph = styled.p`
-//   font-size: ${(props) => props.theme.fontSizes.b1};
-//   line-height: ${(props) => props.theme.lineHeights.b1};
-//   font-weight: ${(props) => props.theme.fontWeights.medium};
-//   color: ${(props) => props.theme.colors.gray700};
-// `;
 
 function App() {
   const [count, setCount] = useState(0);
+  const setGeolocation = useSetRecoilState(geolocationState);
+
   let apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
+  useEffect(() => {
+    // 유저의 위치를 가져오는 함수
+    const fetchUserLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setGeolocation({ latitude, longitude });
+          },
+          (error) => {
+            console.error("Geolocation Error: ", error);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    };
+
+    fetchUserLocation();
+  }, [setGeolocation]);
 
   return (
     <>
