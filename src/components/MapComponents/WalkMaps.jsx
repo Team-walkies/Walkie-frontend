@@ -5,6 +5,8 @@ import myloc from "../../assets/icons/toMyloc.png";
 import UserMarker from "./UserMarker";
 import PoiMarker from "./PoiMarker";
 import Header from "./Header";
+import { useRecoilState } from "recoil";
+import { geolocationState } from "../../utils/atoms";
 
 const ToCurrent = styled.div`
   justify-self: end;
@@ -39,8 +41,9 @@ const MapContainer = styled.div`
 
 const WalkMaps = ({ destination }) => {
   const tmapApiKey = import.meta.env.VITE_TMAP_API_KEY;
+  const [center, setCenter] = useRecoilState(geolocationState);
 
-  const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
+  // const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
   const [heading, setHeading] = useState(0);
   const [directions, setDirections] = useState(null);
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);

@@ -7,6 +7,7 @@ import { geolocationState } from "./utils/atoms";
 import "./App.css";
 import { theme } from "./utils/theme";
 import styled, { ThemeProvider } from "styled-components";
+import Test from "./pages/Test";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -44,6 +45,9 @@ function App() {
         <ThemeProvider theme={theme}>
           <Routes>
             <Route path="/map/*" element={<MapPages />} />
+          </Routes>
+          <Routes>
+            <Route path="/test" element={<Test />} />
           </Routes>
         </ThemeProvider>
       </APIProvider>

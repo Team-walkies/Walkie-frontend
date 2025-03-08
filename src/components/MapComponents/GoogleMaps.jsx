@@ -15,6 +15,8 @@ import Header from "./Header";
 import styled from "styled-components";
 import BottomSheet from "../UI/BottomSheet";
 import PoiMarker from "./PoiMarker";
+import { useRecoilState } from "recoil";
+import { geolocationState } from "../../utils/atoms";
 
 const ToCurrent = styled.div`
   justify-self: end;
@@ -68,7 +70,9 @@ const BlackInfo = styled.div`
   border-radius: 99px;
 `;
 const GoogleMaps = () => {
-  const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
+  const [center, setCenter] = useRecoilState(geolocationState);
+  console.log("center:", center);
+  // const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
   const [heading, setHeading] = useState(0); // 🔄 핸드폰 방향
   const [selected, setSelected] = useState(null); // selected to hold null initially
 
