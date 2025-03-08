@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Map, useMap } from "@vis.gl/react-google-maps";
 import styled from "styled-components";
-import myloc from "../../assets/icons/toMyLoc.png";
+import myloc from "../../assets/icons/toMyloc.png";
 import UserMarker from "./UserMarker";
 import PoiMarker from "./PoiMarker";
 import Header from "./Header";
@@ -186,7 +186,6 @@ const WalkMaps = ({ destination }) => {
           style={{ width: "100%", height: "100%" }}
           options={{
             disableDefaultUI: true,
-            zoomControl: true,
             maxZoom: 20,
             minZoom: 15,
             streetViewControl: false,

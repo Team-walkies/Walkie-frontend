@@ -8,7 +8,7 @@ import {
   useMap,
 } from "@vis.gl/react-google-maps";
 
-import myloc from "../../assets/icons/toMyLoc.png";
+import myloc from "../../assets/icons/toMyloc.png";
 import PoiMarkers from "./PoiMarkers";
 import UserMarker from "./UserMarker";
 import Header from "./Header";
@@ -183,7 +183,6 @@ const GoogleMaps = () => {
           style={{ width: "100%", height: "100%" }}
           options={{
             disableDefaultUI: true,
-            zoomControl: true,
             maxZoom: 20,
             minZoom: 15,
             streetViewControl: false,
