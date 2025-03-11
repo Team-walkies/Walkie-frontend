@@ -274,7 +274,7 @@ const WalkMaps = ({ destination }) => {
           setBtnText("중단하기");
         }
       }
-    }, 5000); // 5초마다 실행
+    }, 2000); // 5초마다 실행
 
     return () => clearInterval(interval); // cleanup
   }, [center, destination]);
@@ -325,7 +325,16 @@ const WalkMaps = ({ destination }) => {
             <span className="b2">{snackText}</span>
           </div>
           {snackText == "와 함께 걷는 중..." && (
-            <SnackBtn insideCircle={insideCircle}>{btnText}</SnackBtn>
+            <SnackBtn
+              onClick={() => {
+                if (insideCircle) {
+                  navigate("/write");
+                }
+              }}
+              insideCircle={insideCircle}
+            >
+              {btnText}
+            </SnackBtn>
           )}
         </SnackContent>
       </SnackBarWrap>
