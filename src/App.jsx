@@ -8,6 +8,7 @@ import "./App.css";
 import { theme } from "./utils/theme";
 import styled, { ThemeProvider } from "styled-components";
 import Test from "./pages/Test";
+import Write from "./pages/Write";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -45,6 +46,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <Routes>
             <Route path="/map/*" element={<MapPages />} />
+            <Route path="/write" element={<Write />} />
           </Routes>
           <Routes>
             <Route path="/test" element={<Test />} />

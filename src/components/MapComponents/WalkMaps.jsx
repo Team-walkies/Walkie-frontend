@@ -7,6 +7,7 @@ import PoiMarker from "./PoiMarker";
 import Header from "./Header";
 import { useRecoilState } from "recoil";
 import { geolocationState } from "../../utils/atoms";
+import { useNavigate } from "react-router-dom";
 
 const ToCurrent = styled.div`
   justify-self: end;
@@ -73,7 +74,8 @@ const SnackContent = styled.div`
 `;
 
 const SnackBtn = styled.button`
-  background-color: var(--gray-900);
+  background-color: ${(props) =>
+    props.insideCircle ? "var(--blue-300)" : "var(--gray-900)"};
   border-radius: 8px;
   padding: 8px 12px;
   color: white;
@@ -88,6 +90,7 @@ const SnackBtn = styled.button`
 const WalkMaps = ({ destination }) => {
   const tmapApiKey = import.meta.env.VITE_TMAP_API_KEY;
   const [center, setCenter] = useRecoilState(geolocationState);
+  const navigate = useNavigate();
 
   // const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
   const [heading, setHeading] = useState(0);
@@ -96,9 +99,12 @@ const WalkMaps = ({ destination }) => {
   const [selected, setSelected] = useState("");
   const [route, setRoute] = useState([]);
   const [snackText, setSnackText] = useState("와 이동을 시작해요!");
+  const [insideCircle, setInsideCircle] = useState(false);
+  const [btnText, setBtnText] = useState("중단하기");
 
   const map = useMap();
 
+  //구글맵 로드
   useEffect(() => {
     const checkGoogleLoaded = () => {
       if (window.google && window.google.maps) {
@@ -127,6 +133,7 @@ const WalkMaps = ({ destination }) => {
     return () => clearInterval(interval);
   }, []);
 
+  //유저 위치 감지
   useEffect(() => {
     if (isGoogleLoaded) {
       if (navigator.geolocation) {
@@ -152,6 +159,7 @@ const WalkMaps = ({ destination }) => {
     }
   }, [isGoogleLoaded, map]);
 
+  //경로 검색
   useEffect(() => {
     if (center && destination) {
       const fetchTmapPedestrianRoute = async () => {
@@ -204,10 +212,11 @@ const WalkMaps = ({ destination }) => {
 
       fetchTmapPedestrianRoute();
     }
-  }, [center, destination]);
+  }, [destination]);
 
+  //경로 그리기
   useEffect(() => {
-    console.log("route", route);
+    // console.log("route", route);
     if (route.length > 0 && map) {
       // 경로를 Polyline으로 지도에 추가
       route.forEach((coordinates) => {
@@ -224,6 +233,39 @@ const WalkMaps = ({ destination }) => {
       });
     }
   }, [route, map]);
+
+  //거리 계산
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (center && destination) {
+        // 구글 Maps API의 computeDistanceBetween를 사용
+        const centerLatLng = new window.google.maps.LatLng(
+          center.lat,
+          center.lng
+        );
+        const destinationLatLng = new window.google.maps.LatLng(
+          destination.lat,
+          destination.lng
+        );
+        const distance =
+          window.google.maps.geometry.spherical.computeDistanceBetween(
+            centerLatLng,
+            destinationLatLng
+          );
+
+        // 100m 이내일 경우
+        if (distance <= 100) {
+          setInsideCircle(true);
+          setBtnText("알 획득하기");
+        } else {
+          setInsideCircle(false);
+          setBtnText("중단하기");
+        }
+      }
+    }, 5000); // 5초마다 실행
+
+    return () => clearInterval(interval); // cleanup
+  }, [center, destination]);
 
   const handleMapClick = () => {
     setSelected(null);
@@ -268,7 +310,9 @@ const WalkMaps = ({ destination }) => {
             </h6>
             <span className="b2">{snackText}</span>
           </div>
-          {snackText == "와 함께 걷는 중..." && <SnackBtn>중단하기</SnackBtn>}
+          {snackText == "와 함께 걷는 중..." && (
+            <SnackBtn insideCircle={insideCircle}>{btnText}</SnackBtn>
+          )}
         </SnackContent>
       </SnackBarWrap>
     </div>

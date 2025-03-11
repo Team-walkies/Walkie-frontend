@@ -41,3 +41,12 @@ export const locationState = atom({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
+
+export const destiCoordsState = atom({
+  key: "destiCoordsState",
+  default: {
+    longitude: 0,
+    latitude: 0,
+  },
+  effects_UNSTABLE: [persistAtom],
+});
