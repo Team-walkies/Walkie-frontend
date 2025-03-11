@@ -253,7 +253,13 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
           </div>
         ) : null}
 
-        <div onClick={() => navigate("/map/walk", { state: { loc } })}>
+        <div
+          onClick={() =>
+            navigate(`/map/walk?lat=${loc.lat}&lng=${loc.lng}`, {
+              state: { loc },
+            })
+          }
+        >
           <BlueBtn>
             <span className="b1" style={{ color: "white" }}>
               출발하기

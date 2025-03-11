@@ -7,7 +7,7 @@ import PoiMarker from "./PoiMarker";
 import Header from "./Header";
 import { useRecoilState } from "recoil";
 import { geolocationState } from "../../utils/atoms";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ToCurrent = styled.div`
   justify-self: end;
@@ -91,6 +91,13 @@ const WalkMaps = ({ destination }) => {
   const tmapApiKey = import.meta.env.VITE_TMAP_API_KEY;
   const [center, setCenter] = useRecoilState(geolocationState);
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  const lat = parseFloat(searchParams.get("lat"));
+  const lng = parseFloat(searchParams.get("lng"));
+
+  const [destination2, setDestination] = useState({ lat: lat, lng: lng });
 
   // const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
   const [heading, setHeading] = useState(0);
@@ -133,6 +140,10 @@ const WalkMaps = ({ destination }) => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    console.log(center);
+  }, []);
+
   //유저 위치 감지
   useEffect(() => {
     if (isGoogleLoaded) {
@@ -165,11 +176,12 @@ const WalkMaps = ({ destination }) => {
       const fetchTmapPedestrianRoute = async () => {
         const startX = center.lng;
         const startY = center.lat;
-        const endX = destination.lng;
-        const endY = destination.lat;
+        const endX = destination2.lng;
+        const endY = destination2.lat;
 
         const apiUrl = `https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1`;
-
+        console.log("start:", startX, startY);
+        console.log("end:", endX, endY);
         const requestBody = {
           startX: startX,
           startY: startY,
@@ -280,26 +292,28 @@ const WalkMaps = ({ destination }) => {
       </ToCurrent>
 
       <MapContainer>
-        <Map
-          mapId={"91cb6cea28939556"}
-          defaultCenter={center}
-          defaultZoom={15}
-          style={{ width: "100%", height: "100%" }}
-          options={{
-            disableDefaultUI: true,
-            maxZoom: 20,
-            minZoom: 15,
-            streetViewControl: false,
-            mapTypeControl: false,
-            clickableIcons: false,
-            gestureHandling: "greedy",
-            zoomControl: false,
-          }}
-          onClick={handleMapClick}
-        >
-          <UserMarker center={center} heading={heading} />
-          <PoiMarker isDestination={true} location={destination} map={map} />
-        </Map>
+        {isGoogleLoaded && center ? (
+          <Map
+            mapId={"91cb6cea28939556"}
+            defaultCenter={center}
+            defaultZoom={15}
+            style={{ width: "100%", height: "100%" }}
+            options={{
+              disableDefaultUI: true,
+              maxZoom: 20,
+              minZoom: 15,
+              streetViewControl: false,
+              mapTypeControl: false,
+              clickableIcons: false,
+              gestureHandling: "greedy",
+              zoomControl: false,
+            }}
+            onClick={handleMapClick}
+          >
+            <UserMarker center={center} heading={heading} />
+            <PoiMarker isDestination={true} location={destination} map={map} />
+          </Map>
+        ) : null}
       </MapContainer>
       <SnackBarWrap>
         <SnackBarBg></SnackBarBg>
