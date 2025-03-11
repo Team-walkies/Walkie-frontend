@@ -38,6 +38,52 @@ const MapContainer = styled.div`
   width: 100%;
   height: 100vh;
 `;
+const SnackBarWrap = styled.div`
+  position: fixed;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SnackBarBg = styled.div`
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 16px;
+  width: 100%;
+  height: 56px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+`;
+
+const SnackContent = styled.div`
+  position: absolute;
+  width: calc(100% - 40px);
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const SnackBtn = styled.button`
+  background-color: var(--gray-900);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: white;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  margin-left: 16px;
+`;
 
 const WalkMaps = ({ destination }) => {
   const tmapApiKey = import.meta.env.VITE_TMAP_API_KEY;
@@ -49,6 +95,7 @@ const WalkMaps = ({ destination }) => {
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
   const [selected, setSelected] = useState("");
   const [route, setRoute] = useState([]);
+  const [snackText, setSnackText] = useState("와 이동을 시작해요!");
 
   const map = useMap();
 
@@ -67,6 +114,15 @@ const WalkMaps = ({ destination }) => {
         checkGoogleLoaded();
       }
     }, 200);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  //스낵바 문구
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSnackText("와 함께 걷는 중...");
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
@@ -203,6 +259,18 @@ const WalkMaps = ({ destination }) => {
           <PoiMarker isDestination={true} location={destination} map={map} />
         </Map>
       </MapContainer>
+      <SnackBarWrap>
+        <SnackBarBg></SnackBarBg>
+        <SnackContent>
+          <div style={{ display: "flex" }}>
+            <h6 className="b2" style={{ fontWeight: "700" }}>
+              태초의 해파리
+            </h6>
+            <span className="b2">{snackText}</span>
+          </div>
+          {snackText == "와 함께 걷는 중..." && <SnackBtn>중단하기</SnackBtn>}
+        </SnackContent>
+      </SnackBarWrap>
     </div>
   );
 };
