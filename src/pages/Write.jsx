@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import x from "../assets/icons/x.png";
+import grayStar from "../assets/icons/ic_star_gray.png";
+import blueStar from "../assets/icons/ic_star.png";
+import spotIcon from "../assets/icons/ic_green.png";
 
 const Container = styled.div`
   /* max-width: 400px; */
@@ -20,22 +24,19 @@ const Header = styled.div`
   margin-bottom: 12px;
 `;
 
+const CloseBtn = styled.img`
+  width: 28px;
+  height: 28px;
+`;
+
 const Title = styled.h3`
   margin-bottom: 20px;
 `;
 
-const CompleteButton = styled.button`
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
+const CompleteButton = styled.h5`
+  color: var(--blue-400);
   cursor: pointer;
   font-size: 14px;
-
-  &:hover {
-    background-color: #0056b3;
-  }
 `;
 
 const InfoSection = styled.div`
@@ -45,18 +46,25 @@ const InfoSection = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  padding: 12px;
+  padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid var(--gray-200);
   box-sizing: border-box; // This ensures padding is considered in the element's width
 `;
 
-const SpotName = styled.h4`
+const SpotName = styled.h6`
   color: var(--blue-400);
+  font-size: 14px;
+  line-height: 20px;
   font-weight: bold;
 `;
 
 const InfoItem = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
   margin: 5px 0;
 `;
@@ -73,13 +81,20 @@ const InfoValue = styled.h4`
 `;
 
 const RatingSection = styled.div`
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 1px solid var(--gray-200);
   margin-bottom: 20px;
   text-align: center;
 `;
 
-const RatingLabel = styled.p`
+const RatingLabel = styled.h6`
   font-size: 14px;
-  color: #777;
+  line-height: 20px;
+  margin-bottom: 8px;
+  color: black;
 `;
 
 const RatingStars = styled.div`
@@ -116,8 +131,12 @@ const ReviewInput = styled.textarea`
     color: var(--gray-400);
     white-space: pre-line;
   }
-`;
 
+  &:focus {
+    border-color: var(--blue-300); /* Blue color when focused */
+    outline: none; /* Remove the default outline */
+  }
+`;
 const CharacterCount = styled.p`
   position: absolute;
   bottom: 16px;
@@ -139,15 +158,27 @@ const Write = () => {
     setReview(event.target.value);
   };
 
+  const StarIcon = styled.img`
+    width: 24px;
+    height: 24px;
+  `;
+
   return (
     <Container>
       <Header>
+        <CloseBtn src={x} />
         <CompleteButton>완료</CompleteButton>
       </Header>
 
       <Title>스팟에 도착했어요!</Title>
       <InfoSection>
-        <SpotName>낙산공원</SpotName>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img
+            src={spotIcon}
+            style={{ width: "16px", height: "16px", marginRight: "4px" }}
+          />
+          <SpotName>낙산공원</SpotName>
+        </div>
         <div
           style={{
             width: "100%",
@@ -187,7 +218,11 @@ const Write = () => {
               active={index < rating}
               onClick={() => handleRatingClick(index)}
             >
-              ★
+              <img
+                src={index < rating ? blueStar : grayStar}
+                alt="star"
+                style={{ width: "24px", height: "24px" }}
+              />
             </Star>
           ))}
         </RatingStars>
@@ -199,7 +234,7 @@ const Write = () => {
           value={review}
           onChange={handleReviewChange}
           maxLength={250}
-          placeholder="해당 스팟에 대한 솔직한 리뷰를 남겨주세요.\n\n *프로필을 공개하면 리뷰가 다른 사람에게도 보여요\n (마이페이지 > 내 정보 > 프로필 공개)"
+          placeholder="해당 스팟에 대한 솔직한 리뷰를 남겨주세요.&#13;&#10;&#13;&#10; *프로필을 공개하면 리뷰가 다른 사람에게도 보여요&#13;&#10; (마이페이지 > 내 정보 > 프로필 공개)"
         />
         <CharacterCount>{review.length}/250</CharacterCount>
       </ReviewSection>

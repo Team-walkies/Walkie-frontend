@@ -55,12 +55,12 @@ const PoiMarker = ({
         icon={{
           url: "/assets/ic_MapIcon.png",
           scaledSize: new window.google.maps.Size(
-            isSelected && !isDestination ? 60 : 40,
-            isSelected && !isDestination ? 60 : 40
+            isSelected && !isDestination ? 40 : 28,
+            isSelected && !isDestination ? 40 : 28
           ), // Change size if selected
           anchor: new window.google.maps.Point(
-            isSelected && !isDestination ? 30 : 20,
-            isSelected && !isDestination ? 30 : 20
+            isSelected && !isDestination ? 20 : 14,
+            isSelected && !isDestination ? 20 : 14
           ),
         }}
       />
