@@ -12,7 +12,7 @@ const CloseModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 4;
+  z-index: 60;
   background: rgba(0, 0, 0, 0.6); // Optional: background shading
 `;
 
@@ -58,24 +58,22 @@ const Text = styled.h4`
   /* margin-bottom: 5px; */
 `;
 
-const CloseModal = ({ onClose }) => {
+const CloseModal = ({ boldText, text, grayFn, redFn, onClose }) => {
   const navigate = useNavigate();
   return (
     <CloseModalContainer onClick={onClose}>
       <CloseWrap onClick={(e) => e.stopPropagation()}>
         <div style={{ textAlign: "center" }}>
-          <h4 style={{ color: "#1C1E1F", fontSize: "18px" }}>
-            리뷰 작성을 중단할까요?
-          </h4>
+          <h4 style={{ color: "#1C1E1F", fontSize: "18px" }}>{boldText}</h4>
           <Text className="b2" style={{ color: "#797982", fontSize: "12px" }}>
-            리뷰는 언제든 다시 작성할 수 있어요
+            {text}
           </Text>
         </div>
         <BtnWrap>
           <ModalBtn
             style={{ backgroundColor: "var(--gray-100)" }}
             onClick={() => {
-              onClose();
+              grayFn();
             }}
           >
             <span style={{ color: "var(--gray-500)" }}>뒤로가기</span>
@@ -83,7 +81,7 @@ const CloseModal = ({ onClose }) => {
           <ModalBtn
             style={{ backgroundColor: "var(--red-100)" }}
             onClick={() => {
-              navigate("/search");
+              redFn();
             }}
           >
             중단하기

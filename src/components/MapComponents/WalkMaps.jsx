@@ -8,6 +8,7 @@ import Header from "./Header";
 import { useRecoilState } from "recoil";
 import { geolocationState } from "../../utils/atoms";
 import { useLocation, useNavigate } from "react-router-dom";
+import CloseModal from "../UI/CloseModal";
 
 const ToCurrent = styled.div`
   justify-self: end;
@@ -108,6 +109,7 @@ const WalkMaps = ({ destination }) => {
   const [snackText, setSnackText] = useState("와 이동을 시작해요!");
   const [insideCircle, setInsideCircle] = useState(false);
   const [btnText, setBtnText] = useState("중단하기");
+  const [isCloseOpen, setIsCloseOpen] = useState(false);
 
   const map = useMap();
 
@@ -285,6 +287,14 @@ const WalkMaps = ({ destination }) => {
 
   return (
     <div>
+      {isCloseOpen && (
+        <CloseModal
+          boldText={"스팟 이동을 중단할까요?"}
+          text={"기록이 저장되지 않아요"}
+          grayFn={() => setIsCloseOpen(false)}
+          redFn={() => navigate("/map")}
+        />
+      )}
       <Header map={map} center={center} />
 
       <ToCurrent onClick={() => map.panTo(center)}>
@@ -329,6 +339,8 @@ const WalkMaps = ({ destination }) => {
               onClick={() => {
                 if (insideCircle) {
                   navigate("/write");
+                } else {
+                  setIsCloseOpen(true);
                 }
               }}
               insideCircle={insideCircle}
