@@ -56,6 +56,9 @@ const Info = styled.div`
   align-items: center;
   gap: 4px;
   /* margin-bottom: 20px; */
+  h4 {
+    min-height: 20px;
+  }
 `;
 const Middle = styled.div`
   padding: 8px 0;
@@ -83,6 +86,7 @@ const MiddleBox = styled.div`
 `;
 const ImgWrap = styled.div`
   overflow-x: auto;
+  overflow-y: hidden;
   white-space: nowrap;
   display: flex;
   gap: 8px;
@@ -104,12 +108,13 @@ const ReviewWrap = styled.div`
   gap: 8px;
 `;
 const ReviewBox = styled.div`
-  background-color: var(--gray-50);
+  /* background-color: var(--gray-50); */
   border-radius: 12px;
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  border-bottom: 2px solid var(--gray-100);
 `;
 const BlueBtn = styled.button`
   width: calc(100% - 32px);
@@ -280,7 +285,7 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
             {/* 리뷰 섹션 */}
             <ReviewWrap>
               <h5>리뷰 5</h5>
-              {/* <ReviewBox>
+              <ReviewBox>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
@@ -305,7 +310,7 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
                   다 좋았는데 벌레가 좀 많음ㅠㅠ 산책하기엔 조금 비추천.. 담에
                   다시 안올거야
                 </span>
-              </ReviewBox> */}
+              </ReviewBox>
               <EmptyView>
                 <span>리뷰가 아직 없어요</span>
               </EmptyView>
