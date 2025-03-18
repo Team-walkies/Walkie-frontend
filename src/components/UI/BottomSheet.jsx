@@ -5,6 +5,7 @@ import exploreIcon from "../../assets/icons/ic_explore.png";
 import visitorsIcon from "../../assets/icons/ic_visitors.png";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import x from "../../assets/icons/x.png";
 
 const Wrapper = styled(motion.div)`
   background-color: white;
@@ -12,7 +13,7 @@ const Wrapper = styled(motion.div)`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: ${(props) => (props.expanded ? "calc(100% - 44px)" : "340px")};
+  height: ${(props) => (props.expanded ? "calc(100%)" : "300px")};
   z-index: 100;
   box-shadow:
     0px 4px 26px rgba(0, 0, 0, 0.1),
@@ -23,8 +24,10 @@ const Wrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;
 `;
+
 const Handle = styled.div`
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
   height: 28px;
@@ -38,6 +41,7 @@ const Handle = styled.div`
     background-color: ${(props) => props.theme.colors.gray200};
   }
 `;
+
 const ContentWrap = styled.div`
   flex-grow: 1;
   padding: 20px 16px;
@@ -54,8 +58,9 @@ const Info = styled.div`
   /* margin-bottom: 20px; */
 `;
 const Middle = styled.div`
-  padding: 20px 0;
-  padding-bottom: 0;
+  padding: 8px 0;
+  background-color: var(--gray-50);
+  margin-top: 16px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -80,7 +85,7 @@ const ImgWrap = styled.div`
   overflow-x: auto;
   white-space: nowrap;
   display: flex;
-  gap: 4px;
+  gap: 8px;
   flex-direction: column;
 
   img {
@@ -92,7 +97,7 @@ const ImgWrap = styled.div`
   }
 `;
 const ReviewWrap = styled.div`
-  padding: 20px 16px;
+  padding: 20px 0px;
   padding-top: 0px;
   display: flex;
   flex-direction: column;
@@ -121,6 +126,25 @@ const BlueBtn = styled.button`
   left: 16px;
   box-sizing: border-box;
 `;
+const CloseBtn = styled.img`
+  position: absolute;
+  left: 16px;
+  top: 8px;
+  width: 28px;
+  height: 28px;
+`;
+
+const EmptyView = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 50px;
+
+  span {
+    color: var(--gray-400);
+  }
+`;
+
 const BottomSheet = ({ closeFn, name, loc, map }) => {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -162,8 +186,17 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
 
   return (
     <Wrapper expanded={expanded}>
-      <Handle onClick={() => setExpanded(!expanded)}>
-        <div></div>
+      <Handle>
+        {expanded ? (
+          <CloseBtn
+            src={x}
+            onClick={() => {
+              setExpanded(false);
+            }}
+          />
+        ) : (
+          <div onClick={() => setExpanded(!expanded)}></div>
+        )}
       </Handle>
       <ContentWrap>
         <Info>
@@ -171,32 +204,44 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
           <h4 className="b2" style={{ color: "var(--gray-400)" }}>
             {curLocation}
           </h4>
-          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+          {/* <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             <span className="b2">여기서</span>
             <h6 style={{ margin: 0 }}>
               <b>31분 (2.5km)</b>
             </h6>
             <span className="b2">더 가야해요</span>
-          </div>
+          </div> */}
         </Info>
 
         <Middle>
           <MiddleBox>
-            <img src={visitorsIcon} alt="방문객" />
+            <img
+              style={{ width: "20px", height: "20px" }}
+              src={visitorsIcon}
+              alt="방문객"
+            />
             <span className="b2" style={{ color: "var(--gray-700)" }}>
               방문자
             </span>
             <h6 style={{ color: "var(--gray-700)" }}>32명</h6>
           </MiddleBox>
           <MiddleBox>
-            <img src={reviewIcon} alt="리뷰" />
+            <img
+              style={{ width: "20px", height: "20px" }}
+              src={reviewIcon}
+              alt="리뷰"
+            />
             <span className="b2" style={{ color: "var(--gray-700)" }}>
               리뷰
             </span>
             <h6 style={{ color: "var(--gray-700)" }}>5개</h6>
           </MiddleBox>
           <MiddleBox>
-            <img src={exploreIcon} alt="탐색" />
+            <img
+              style={{ width: "20px", height: "20px" }}
+              src={exploreIcon}
+              alt="탐색"
+            />
             <span className="b2" style={{ color: "var(--gray-700)" }}>
               나의 탐험
             </span>
@@ -204,26 +249,38 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
           </MiddleBox>
         </Middle>
 
+        <div
+          style={{
+            backgroundColor: "var(--gray-100)",
+            width: "calc(100% + 32x)",
+            height: "4px",
+            marginTop: "20px",
+          }}
+        ></div>
+
         {expanded ? (
           <div>
             {/* 사진 섹션 */}
-            <div style={{ padding: "20px 16px" }}>
+            <div style={{ padding: "20px 0px 24px 0px" }}>
               <h5>사진 3</h5>
               <ImgWrap style={{ display: expanded ? "flex" : "none" }}>
-                <div>
+                {/* <div style={{ display: "flex", gap: "4px" }}>
                   <img src="/assets/photo1.jpg" />
                   <img src="/assets/photo1.jpg" />
                   <img src="/assets/photo1.jpg" />
                   <img src="/assets/photo2.jpg" />
                   <img src="/assets/photo3.jpg" />
-                </div>
+                </div> */}
+                <EmptyView>
+                  <span>사진이 아직 없어요</span>
+                </EmptyView>
               </ImgWrap>
             </div>
 
             {/* 리뷰 섹션 */}
             <ReviewWrap>
               <h5>리뷰 5</h5>
-              <ReviewBox>
+              {/* <ReviewBox>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
@@ -248,7 +305,10 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
                   다 좋았는데 벌레가 좀 많음ㅠㅠ 산책하기엔 조금 비추천.. 담에
                   다시 안올거야
                 </span>
-              </ReviewBox>
+              </ReviewBox> */}
+              <EmptyView>
+                <span>리뷰가 아직 없어요</span>
+              </EmptyView>
             </ReviewWrap>
           </div>
         ) : null}

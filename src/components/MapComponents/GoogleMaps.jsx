@@ -71,8 +71,6 @@ const BlackInfo = styled.div`
 `;
 const GoogleMaps = () => {
   const [center, setCenter] = useRecoilState(geolocationState);
-  console.log("center:", center);
-  // const [center, setCenter] = useState({ lat: 37.6766464, lng: 126.7695616 });
   const [heading, setHeading] = useState(0); // 🔄 핸드폰 방향
   const [selected, setSelected] = useState(null); // selected to hold null initially
 

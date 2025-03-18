@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +12,7 @@ const CloseModalContainer = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 60;
-  background: rgba(0, 0, 0, 0.6); // Optional: background shading
+  background: rgba(0, 0, 0, 0.6);
 `;
 
 const CloseWrap = styled.div`
@@ -51,6 +50,7 @@ const BtnWrap = styled.div`
   gap: 8px;
   margin-top: 20px;
 `;
+
 const Text = styled.h4`
   color: #f6f8fa;
   font-size: 20px;

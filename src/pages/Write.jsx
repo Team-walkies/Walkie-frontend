@@ -4,6 +4,7 @@ import x from "../assets/icons/x.png";
 import grayStar from "../assets/icons/ic_star_gray.png";
 import blueStar from "../assets/icons/ic_star.png";
 import spotIcon from "../assets/icons/ic_green.png";
+import CloseModal from "../components/UI/CloseModal";
 
 const Container = styled.div`
   /* max-width: 400px; */
@@ -149,6 +150,7 @@ const CharacterCount = styled.p`
 const Write = () => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
+  const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
 
   const handleRatingClick = (index) => {
     setRating(index + 1);
@@ -165,8 +167,16 @@ const Write = () => {
 
   return (
     <Container>
+      {isCloseModalOpen && (
+        <CloseModal
+          boldText={"리뷰 작성을 중단할까요?"}
+          text={"리뷰는 언제든 다시 작성할 수 있어요"}
+          grayFn={() => setIsCloseModalOpen(false)}
+          redFn={() => {}}
+        />
+      )}
       <Header>
-        <CloseBtn src={x} />
+        <CloseBtn src={x} onClick={() => setIsCloseModalOpen(true)} />
         <CompleteButton>완료</CompleteButton>
       </Header>
 
