@@ -50,3 +50,15 @@ export const destiCoordsState = atom({
   },
   effects_UNSTABLE: [persistAtom],
 });
+
+export const destinationState = atom({
+  key: "destinationState",
+  default: {
+    name: "",
+    // id: 0, //이후 추가
+    startTime: "",
+    endTime: "",
+    meters: 0,
+  },
+  effects_UNSTABLE: [persistAtom],
+});

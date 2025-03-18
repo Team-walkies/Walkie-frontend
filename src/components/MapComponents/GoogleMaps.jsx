@@ -165,6 +165,7 @@ const GoogleMaps = () => {
           name={selected.key}
           loc={selected.location}
           map={map}
+          center={center}
         />
       ) : null}
 

@@ -6,6 +6,8 @@ import visitorsIcon from "../../assets/icons/ic_visitors.png";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import x from "../../assets/icons/x.png";
+import { useSetRecoilState } from "recoil";
+import { destinationState } from "../../utils/atoms";
 
 const Wrapper = styled(motion.div)`
   background-color: white;
@@ -150,10 +152,35 @@ const EmptyView = styled.div`
   }
 `;
 
-const BottomSheet = ({ closeFn, name, loc, map }) => {
+const BottomSheet = ({ closeFn, name, loc, map, center }) => {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const [curLocation, setCurLocation] = useState("");
+  const setDestination = useSetRecoilState(destinationState);
+
+  const [meters, setMeters] = useState(0);
+
+  useEffect(() => {
+    if (window.google && window.google.maps && loc && center) {
+      // LatLng 객체로 변환
+      const origin = new window.google.maps.LatLng(center.lat, center.lng);
+      const destination = new window.google.maps.LatLng(loc.lat, loc.lng);
+
+      // 거리 계산
+      const distanceInMeters =
+        window.google.maps.geometry.spherical.computeDistanceBetween(
+          origin,
+          destination
+        );
+      setMeters(Math.round(distanceInMeters)); // 미터 단위로 거리 저장
+
+      console.log(
+        `Calculated distance: ${Math.round(distanceInMeters)} meters`
+      );
+    }
+  }, [loc, center]);
+
+  const currentTime = new Date().toISOString();
 
   useEffect(() => {
     console.log(name, loc);
@@ -207,7 +234,7 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
         <Info>
           <h3>{name}</h3>
           <h4 className="b2" style={{ color: "var(--gray-400)" }}>
-            {curLocation}
+            {curLocation} | {meters}m
           </h4>
           {/* <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             <span className="b2">여기서</span>
@@ -319,11 +346,17 @@ const BottomSheet = ({ closeFn, name, loc, map }) => {
         ) : null}
 
         <div
-          onClick={() =>
+          onClick={() => {
+            setDestination({
+              name: name,
+              startTime: currentTime,
+              endTime: 0,
+              meters: meters,
+            });
             navigate(`/map/walk?lat=${loc.lat}&lng=${loc.lng}`, {
               state: { loc },
-            })
-          }
+            });
+          }}
         >
           <BlueBtn>
             <span className="b1" style={{ color: "white" }}>

@@ -5,6 +5,8 @@ import grayStar from "../assets/icons/ic_star_gray.png";
 import blueStar from "../assets/icons/ic_star.png";
 import spotIcon from "../assets/icons/ic_green.png";
 import CloseModal from "../components/UI/CloseModal";
+import { useRecoilValue } from "recoil";
+import { destinationState } from "../utils/atoms";
 
 const Container = styled.div`
   /* max-width: 400px; */
@@ -147,10 +149,16 @@ const CharacterCount = styled.p`
   text-align: right;
 `;
 
+const StarIcon = styled.img`
+  width: 24px;
+  height: 24px;
+`;
+
 const Write = () => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
+  const destInfo = useRecoilValue(destinationState);
 
   const handleRatingClick = (index) => {
     setRating(index + 1);
@@ -160,10 +168,19 @@ const Write = () => {
     setReview(event.target.value);
   };
 
-  const StarIcon = styled.img`
-    width: 24px;
-    height: 24px;
-  `;
+  const calculateTimeDifferenceInMinutes = (startTime, endTime) => {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+    const timeDifferenceInMilliseconds = end - start;
+    const timeDifferenceInMinutes = timeDifferenceInMilliseconds / (1000 * 60); // convert to minutes
+    return Math.round(timeDifferenceInMinutes); // Round to the nearest minute
+  };
+
+  // Calculate the travel time in minutes
+  const travelTimeInMinutes = calculateTimeDifferenceInMinutes(
+    destInfo.startTime,
+    destInfo.endTime
+  );
 
   return (
     <Container>
@@ -187,7 +204,7 @@ const Write = () => {
             src={spotIcon}
             style={{ width: "16px", height: "16px", marginRight: "4px" }}
           />
-          <SpotName>낙산공원</SpotName>
+          <SpotName>{destInfo.name}</SpotName>
         </div>
         <div
           style={{
@@ -206,7 +223,7 @@ const Write = () => {
         >
           <InfoItem>
             <InfoLabel>이동 거리</InfoLabel>
-            <InfoValue>3.1km</InfoValue>
+            <InfoValue>{destInfo.meters / 1000}km</InfoValue>
           </InfoItem>
           <InfoItem>
             <InfoLabel>걸음 수</InfoLabel>
@@ -214,7 +231,7 @@ const Write = () => {
           </InfoItem>
           <InfoItem>
             <InfoLabel>이동 시간</InfoLabel>
-            <InfoValue>30m</InfoValue>
+            <InfoValue>{travelTimeInMinutes}m</InfoValue>
           </InfoItem>
         </div>
       </InfoSection>

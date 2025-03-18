@@ -5,8 +5,8 @@ import myloc from "../../assets/icons/toMyloc.png";
 import UserMarker from "./UserMarker";
 import PoiMarker from "./PoiMarker";
 import Header from "./Header";
-import { useRecoilState } from "recoil";
-import { geolocationState } from "../../utils/atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { destinationState, geolocationState } from "../../utils/atoms";
 import { useLocation, useNavigate } from "react-router-dom";
 import CloseModal from "../UI/CloseModal";
 
@@ -95,6 +95,8 @@ const WalkMaps = ({ destination }) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
+  const currentEndTime = new Date().toISOString();
+
   const lat = parseFloat(searchParams.get("lat"));
   const lng = parseFloat(searchParams.get("lng"));
 
@@ -110,6 +112,7 @@ const WalkMaps = ({ destination }) => {
   const [insideCircle, setInsideCircle] = useState(false);
   const [btnText, setBtnText] = useState("중단하기");
   const [isCloseOpen, setIsCloseOpen] = useState(false);
+  const setDestInfo = useSetRecoilState(destinationState);
 
   const map = useMap();
 
@@ -348,6 +351,10 @@ const WalkMaps = ({ destination }) => {
           <SnackBtn
             onClick={() => {
               if (insideCircle) {
+                setDestInfo((prevState) => ({
+                  ...prevState, // 기존 값 그대로 유지
+                  endTime: currentEndTime, // endTime만 현재 시간으로 설정
+                }));
                 navigate("/write");
               } else {
                 setIsCloseOpen(true);
