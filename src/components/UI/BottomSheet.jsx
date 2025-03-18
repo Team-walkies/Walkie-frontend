@@ -46,6 +46,7 @@ const Handle = styled.div`
 `;
 
 const ContentWrap = styled.div`
+  overflow-x: hidden;
   flex-grow: 1;
   padding: 20px 16px;
   align-items: center;
