@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import x from "../../assets/icons/x.png";
 import { useSetRecoilState } from "recoil";
 import { destinationState } from "../../utils/atoms";
+import green from "../../assets/icons/ic_green.png";
 
 const Wrapper = styled(motion.div)`
   background-color: white;
@@ -20,8 +21,8 @@ const Wrapper = styled(motion.div)`
   box-shadow:
     0px 4px 26px rgba(0, 0, 0, 0.1),
     0px 1px 3px rgba(0, 0, 0, 0.08);
-  border-top-right-radius: 20px;
-  border-top-left-radius: 20px;
+  border-top-right-radius: ${(props) => (props.expanded ? "0px" : "20px")};
+  border-top-left-radius: ${(props) => (props.expanded ? "0px" : "20px")};
   transition: height 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
@@ -232,7 +233,10 @@ const BottomSheet = ({ closeFn, name, loc, map, center }) => {
       </Handle>
       <ContentWrap>
         <Info>
-          <h3>{name}</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <img src={green} style={{ width: "20px", height: "20px" }} />
+            <h3>{name}</h3>
+          </div>
           <h4 className="b2" style={{ color: "var(--gray-400)" }}>
             {curLocation} | {meters}m
           </h4>
@@ -283,8 +287,10 @@ const BottomSheet = ({ closeFn, name, loc, map, center }) => {
 
         <div
           style={{
+            position: "relative", // 상대 위치 조정
+            left: "-16px", // 16px 만큼 왼쪽으로 이동
             backgroundColor: "var(--gray-100)",
-            width: "calc(100% + 32x)",
+            width: "calc(100% + 32px)",
             height: "4px",
             marginTop: "20px",
           }}
