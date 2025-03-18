@@ -23,12 +23,17 @@ const ToCurrent = styled.div`
   width: 40px;
   height: 40px;
   position: absolute;
-  right: 16px;
-  top: 48px;
+  /* right: 16px;
+  top: 48px; */
   background-color: white;
   border-radius: 50%;
   display: flex;
   justify-content: center;
+
+  /* bottom: 8px; */
+  right: 16px;
+  bottom: ${(props) => (props.selected ? "308px" : "8px")};
+  transition: bottom 0.3s ease-in-out;
 
   align-items: center;
   z-index: 30;
@@ -173,7 +178,7 @@ const GoogleMaps = () => {
         </BlackInfo>
       </InfoBox>
 
-      <ToCurrent onClick={() => map.panTo(center)}>
+      <ToCurrent selected={selected} onClick={() => map.panTo(center)}>
         <img src={myloc} alt="현재 위치로 이동" />
       </ToCurrent>
 
