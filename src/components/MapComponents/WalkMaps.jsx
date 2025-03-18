@@ -16,7 +16,7 @@ const ToCurrent = styled.div`
   height: 40px;
   position: absolute;
   right: 16px;
-  top: 48px;
+  bottom: 80px;
   background-color: white;
   border-radius: 50%;
   display: flex;
@@ -270,6 +270,7 @@ const WalkMaps = ({ destination }) => {
         // 100m 이내일 경우
         if (distance <= 100) {
           setInsideCircle(true);
+
           setBtnText("알 획득하기");
         } else {
           setInsideCircle(false);
@@ -329,25 +330,33 @@ const WalkMaps = ({ destination }) => {
         <SnackBarBg></SnackBarBg>
         <SnackContent>
           <div style={{ display: "flex" }}>
-            <h6 className="b2" style={{ fontWeight: "700" }}>
-              태초의 해파리
-            </h6>
-            <span className="b2">{snackText}</span>
+            {insideCircle ? (
+              <span className="b2">도착 완료! 알을 발견했어요</span>
+            ) : (
+              <>
+                <h6 className="b2" style={{ fontWeight: "700" }}>
+                  태초의 해파리
+                </h6>
+                <span className="b2">{snackText}</span>
+              </>
+            )}
           </div>
-          {snackText == "와 함께 걷는 중..." && (
-            <SnackBtn
-              onClick={() => {
-                if (insideCircle) {
-                  navigate("/write");
-                } else {
-                  setIsCloseOpen(true);
-                }
-              }}
-              insideCircle={insideCircle}
-            >
-              {btnText}
-            </SnackBtn>
-          )}
+          {/* {snackText == "와 함께 걷는 중..." && (
+            
+          )} */}
+
+          <SnackBtn
+            onClick={() => {
+              if (insideCircle) {
+                navigate("/write");
+              } else {
+                setIsCloseOpen(true);
+              }
+            }}
+            insideCircle={insideCircle}
+          >
+            {btnText}
+          </SnackBtn>
         </SnackContent>
       </SnackBarWrap>
     </div>

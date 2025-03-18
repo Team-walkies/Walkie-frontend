@@ -80,6 +80,7 @@ const GoogleMaps = () => {
   const [selected, setSelected] = useState(null); // selected to hold null initially
 
   const map = useMap();
+  console.log(center);
 
   const locations = [
     { key: "ilsanLakePark", location: { lat: 37.675418, lng: 126.769645 } },
@@ -88,6 +89,7 @@ const GoogleMaps = () => {
     { key: "westernDome", location: { lat: 37.662223, lng: 126.770752 } },
     { key: "oneMount", location: { lat: 37.660203, lng: 126.752867 } },
     { key: "aquaPlanet", location: { lat: 37.660748, lng: 126.753944 } },
+    { key: "우리집", location: { lat: 37.6763, lng: 126.7728384 } },
     {
       key: "hyundaiDepartmentStore",
       location: { lat: 37.646979, lng: 126.788208 },
