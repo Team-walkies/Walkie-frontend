@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import chevron from "../../assets/icons/ic_Chevron.png";
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,6 +55,16 @@ const Header = ({ map, center }) => {
 
   return (
     <Wrapper>
+      <img
+        src={chevron}
+        style={{
+          position: "absolute",
+          top: "10px",
+          left: "16px",
+          width: "24px",
+          height: "24px",
+        }}
+      />
       <h6>{curLocation}</h6>
     </Wrapper>
   );

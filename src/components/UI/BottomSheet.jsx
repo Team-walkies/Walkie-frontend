@@ -67,6 +67,7 @@ const Info = styled.div`
 const Middle = styled.div`
   padding: 8px 0;
   background-color: var(--gray-50);
+  border-radius: 12px;
   margin-top: 16px;
   width: 100%;
   display: flex;
