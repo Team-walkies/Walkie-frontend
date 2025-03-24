@@ -173,7 +173,7 @@ const WalkMaps = ({ destination }) => {
         alert("Geolocation is not supported.");
       }
     }
-  }, [isGoogleLoaded]);
+  }, [isGoogleLoaded, map]);
 
   //경로 검색
   useEffect(() => {
