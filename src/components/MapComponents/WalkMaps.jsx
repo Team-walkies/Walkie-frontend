@@ -88,7 +88,7 @@ const SnackBtn = styled.button`
   margin-left: 16px;
 `;
 
-const WalkMaps = ({ destination }) => {
+const WalkMaps = () => {
   const tmapApiKey = import.meta.env.VITE_TMAP_API_KEY;
   const [center, setCenter] = useRecoilState(geolocationState);
   const navigate = useNavigate();
@@ -118,6 +118,7 @@ const WalkMaps = ({ destination }) => {
 
   //구글맵 로드
   useEffect(() => {
+    console.clear();
     const checkGoogleLoaded = () => {
       if (window.google && window.google.maps) {
         setIsGoogleLoaded(true);
@@ -177,7 +178,7 @@ const WalkMaps = ({ destination }) => {
 
   //경로 검색
   useEffect(() => {
-    if (center && destination) {
+    if (center && destination2) {
       const fetchTmapPedestrianRoute = async () => {
         const startX = center.lng;
         const startY = center.lat;
@@ -229,7 +230,7 @@ const WalkMaps = ({ destination }) => {
 
       fetchTmapPedestrianRoute();
     }
-  }, [destination]);
+  }, [destination2]);
 
   //경로 그리기
   useEffect(() => {

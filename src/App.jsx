@@ -11,7 +11,6 @@ import Test from "./pages/Test";
 import Write from "./pages/Write";
 
 function App() {
-  const [count, setCount] = useState(0);
   const setGeolocation = useSetRecoilState(geolocationState);
 
   let apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
