@@ -155,6 +155,7 @@ const EmptyView = styled.div`
   }
 `;
 
+//loc : { lat: 37.675418, lng: 126.769645 }
 const BottomSheet = ({ closeFn, name, loc, map, center }) => {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);

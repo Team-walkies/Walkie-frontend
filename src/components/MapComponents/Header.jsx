@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import chevron from "../../assets/icons/ic_Chevron.png";
+import { useRecoilValue } from "recoil";
 
 const Wrapper = styled.div`
   position: relative;
@@ -16,6 +17,7 @@ const Wrapper = styled.div`
 
 const Header = ({ map, center }) => {
   const [curLocation, setCurLocation] = useState("");
+  useRecoilValue;
 
   useEffect(() => {
     const checkGoogleLoaded = () => {

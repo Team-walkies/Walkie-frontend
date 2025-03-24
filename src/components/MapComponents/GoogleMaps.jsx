@@ -146,7 +146,7 @@ const GoogleMaps = () => {
         handleOrientation
       );
     };
-  }, [map]);
+  }, []);
 
   // useEffect(() => {
   //   console.log(selected);

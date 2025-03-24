@@ -173,7 +173,7 @@ const WalkMaps = ({ destination }) => {
         alert("Geolocation is not supported.");
       }
     }
-  }, [isGoogleLoaded, map]);
+  }, [isGoogleLoaded]);
 
   //경로 검색
   useEffect(() => {
@@ -254,15 +254,15 @@ const WalkMaps = ({ destination }) => {
   //거리 계산
   useEffect(() => {
     const interval = setInterval(() => {
-      if (center && destination) {
+      if (center && destination2) {
         // 구글 Maps API의 computeDistanceBetween를 사용
         const centerLatLng = new window.google.maps.LatLng(
           center.lat,
           center.lng
         );
         const destinationLatLng = new window.google.maps.LatLng(
-          destination.lat,
-          destination.lng
+          destination2.lat,
+          destination2.lng
         );
         const distance =
           window.google.maps.geometry.spherical.computeDistanceBetween(
@@ -283,7 +283,7 @@ const WalkMaps = ({ destination }) => {
     }, 2000); // 5초마다 실행
 
     return () => clearInterval(interval); // cleanup
-  }, [center, destination]);
+  }, [center, destination2]);
 
   const handleMapClick = () => {
     setSelected(null);
@@ -325,7 +325,7 @@ const WalkMaps = ({ destination }) => {
             onClick={handleMapClick}
           >
             <UserMarker center={center} heading={heading} />
-            <PoiMarker isDestination={true} location={destination} map={map} />
+            <PoiMarker isDestination={true} location={destination2} map={map} />
           </Map>
         ) : null}
       </MapContainer>
