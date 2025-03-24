@@ -120,11 +120,6 @@ const GoogleMaps = () => {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           });
-          if (map)
-            map.panTo({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            });
         },
         (error) => console.error("Geolocation error:", error),
         { enableHighAccuracy: true }
