@@ -15,8 +15,8 @@ import Header from "./Header";
 import styled from "styled-components";
 import BottomSheet from "../UI/BottomSheet";
 import PoiMarker from "./PoiMarker";
-import { useRecoilState } from "recoil";
-import { geolocationState } from "../../utils/atoms";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { destinationState, geolocationState } from "../../utils/atoms";
 
 const ToCurrent = styled.div`
   justify-self: end;
@@ -81,9 +81,24 @@ const GoogleMaps = () => {
 
   const map = useMap();
 
+  const resetDestinationState = useResetRecoilState(destinationState);
+
   useEffect(() => {
-    console.log(center);
-  }, []);
+    // destinationState 리셋
+    resetDestinationState();
+
+    // localStorage에서 recoil-persist의 destinationState만 삭제
+    const persistedState = localStorage.getItem("recoil-persist");
+    if (persistedState) {
+      const parsedState = JSON.parse(persistedState);
+      // destinationState만 삭제
+      delete parsedState.destinationState;
+      // localStorage에 새롭게 저장
+      localStorage.setItem("recoil-persist", JSON.stringify(parsedState));
+    }
+
+    console.log("destinationState가 초기화되었습니다.");
+  }, [resetDestinationState]);
 
   const locations = [
     { key: "ilsanLakePark", location: { lat: 37.675418, lng: 126.769645 } },

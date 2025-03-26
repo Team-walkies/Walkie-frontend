@@ -232,7 +232,7 @@ const Write = () => {
           </InfoItem>
           <InfoItem>
             <InfoLabel>이동 시간</InfoLabel>
-            <InfoValue>{travelTimeInMinutes}분</InfoValue>
+            <InfoValue>{isNaN ? 0 : travelTimeInMinutes}분</InfoValue>
           </InfoItem>
         </div>
       </InfoSection>
