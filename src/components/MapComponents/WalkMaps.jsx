@@ -152,21 +152,26 @@ const WalkMaps = () => {
 
   //유저 위치 감지
   useEffect(() => {
-    if (isGoogleLoaded) {
-      if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(
-          (position) => {
-            setCenter({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            });
-          },
-          (error) => console.error("Geolocation error:", error),
-          { enableHighAccuracy: true }
-        );
-      } else {
-        alert("Geolocation is not supported.");
-      }
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        (position) => {
+          const newCenter = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+
+          // 유효한 값인지 확인
+          if (isFinite(newCenter.lat) && isFinite(newCenter.lng)) {
+            setCenter(newCenter); // 값이 유효할 경우만 setCenter 호출
+          } else {
+            console.error("Invalid position data:", newCenter);
+          }
+        },
+        (error) => console.error("Geolocation error:", error),
+        { enableHighAccuracy: true }
+      );
+    } else {
+      alert("Geolocation is not supported.");
     }
   }, [isGoogleLoaded, map]);
 

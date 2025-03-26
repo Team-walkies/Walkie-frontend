@@ -4,16 +4,16 @@ import Header from "../../components/MapComponents/Header";
 import WalkMaps from "../../components/MapComponents/WalkMaps";
 
 const Walk = () => {
-  const location = useLocation(); // To get the location data passed through navigation
-  const { loc } = location.state || { lat: 37.675418, lng: 126.769645 }; // Extract loc from state
+  // const location = useLocation(); // To get the location data passed through navigation
+  // const { loc } = location.state || { lat: 37.675418, lng: 126.769645 }; // Extract loc from state
 
-  useEffect(() => {
-    console.clear();
-    console.log("loc", loc);
-  }, []);
+  // useEffect(() => {
+  //   console.clear();
+  //   console.log("loc", loc);
+  // }, []);
   return (
     <div>
-      <WalkMaps destination={loc} />
+      <WalkMaps />
     </div>
   );
 };
