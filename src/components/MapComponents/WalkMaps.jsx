@@ -175,6 +175,39 @@ const WalkMaps = () => {
     }
   }, [isGoogleLoaded, map]);
 
+  //이동 테스트용 코드
+  // useEffect(() => {
+  //   if (isGoogleLoaded) {
+  //     let currentLat = 37.6766464;
+  //     let currentLng = 126.7695616;
+  //     const endLat = 37.683312;
+  //     const endLng = 126.763159;
+  //     const duration = 10000; // 10초 동안 이동
+  //     const steps = 100; // 이동을 100개의 작은 단계로 나누기
+  //     const latIncrement = (endLat - currentLat) / steps;
+  //     const lngIncrement = (endLng - currentLng) / steps;
+
+  //     let stepCount = 0;
+  //     const interval = setInterval(() => {
+  //       // 좌표 업데이트
+  //       currentLat += latIncrement;
+  //       currentLng += lngIncrement;
+  //       setCenter({
+  //         lat: currentLat,
+  //         lng: currentLng,
+  //       });
+  //       // console.log(currentLat, currentLng);
+
+  //       stepCount++;
+
+  //       // 10초가 지나면 종료
+  //       if (stepCount >= steps) {
+  //         clearInterval(interval);
+  //       }
+  //     }, duration / steps); // 100개의 작은 단계로 나누어 10초 동안 이동
+  //   }
+  // }, [isGoogleLoaded]);
+
   //경로 검색
   useEffect(() => {
     if (center && destination2) {
@@ -253,37 +286,35 @@ const WalkMaps = () => {
 
   //거리 계산
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (center && destination2) {
-        // 구글 Maps API의 computeDistanceBetween를 사용
-        const centerLatLng = new window.google.maps.LatLng(
-          center.lat,
-          center.lng
+    if (isGoogleLoaded && center && destination2) {
+      //사용자 위치
+      const centerLatLng = new window.google.maps.LatLng(
+        center.lat,
+        center.lng
+      );
+      //목적지
+      const destinationLatLng = new window.google.maps.LatLng(
+        destination2.lat,
+        destination2.lng
+      );
+      const distance =
+        window.google.maps.geometry.spherical.computeDistanceBetween(
+          centerLatLng,
+          destinationLatLng
         );
-        const destinationLatLng = new window.google.maps.LatLng(
-          destination2.lat,
-          destination2.lng
-        );
-        const distance =
-          window.google.maps.geometry.spherical.computeDistanceBetween(
-            centerLatLng,
-            destinationLatLng
-          );
 
-        // 100m 이내일 경우
-        if (distance <= 100) {
-          setInsideCircle(true);
+      // console.log("거리 계산중 : ", distance.toFixed(0));
 
-          setBtnText("알 획득하기");
-        } else {
-          setInsideCircle(false);
-          setBtnText("중단하기");
-        }
+      // 100m 이내일 경우
+      if (distance <= 100) {
+        setInsideCircle(true);
+        setBtnText("알 획득하기");
+      } else {
+        setInsideCircle(false);
+        setBtnText("중단하기");
       }
-    }, 2000); // 5초마다 실행
-
-    return () => clearInterval(interval); // cleanup
-  }, [center, destination2]);
+    }
+  }, [center]);
 
   const handleMapClick = () => {
     setSelected(null);

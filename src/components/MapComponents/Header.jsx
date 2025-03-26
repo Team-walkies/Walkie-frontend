@@ -27,12 +27,12 @@ const Header = ({ map, center }) => {
 
         geocoder.geocode({ location: latlng }, (result, status) => {
           if (status == "OK") {
-            console.log(
-              //??시 ??구
-              result[0].address_components[3].short_name +
-                " " +
-                result[0].address_components[2].short_name
-            );
+            // console.log(
+            //   //??시 ??구
+            //   result[0].address_components[3].short_name +
+            //     " " +
+            //     result[0].address_components[2].short_name
+            // );
             setCurLocation(
               result[0].address_components[3].short_name +
                 " " +
