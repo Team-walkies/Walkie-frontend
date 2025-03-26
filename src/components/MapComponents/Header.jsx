@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import chevron from "../../assets/icons/ic_Chevron.png";
 import { useRecoilValue } from "recoil";
+import { locationState } from "../../utils/atoms";
 
 const Wrapper = styled.div`
   position: relative;
@@ -17,6 +18,9 @@ const Wrapper = styled.div`
 
 const Header = ({ map, center }) => {
   const [curLocation, setCurLocation] = useState("");
+  const locName = useRecoilValue(locationState);
+
+  console.log("name", locName);
   useRecoilValue;
 
   useEffect(() => {
@@ -67,7 +71,7 @@ const Header = ({ map, center }) => {
           height: "24px",
         }}
       />
-      <h6>{curLocation}</h6>
+      <h6>{locName}</h6>
     </Wrapper>
   );
 };

@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import MapPages from "./routes/MapPages";
 import { APIProvider } from "@vis.gl/react-google-maps";
-import { useSetRecoilState } from "recoil";
-import { geolocationState } from "./utils/atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { geolocationState, locationState } from "./utils/atoms";
 import "./App.css";
 import { theme } from "./utils/theme";
 import styled, { ThemeProvider } from "styled-components";
@@ -12,6 +12,7 @@ import Write from "./pages/Write";
 
 function App() {
   const setGeolocation = useSetRecoilState(geolocationState);
+  const [locName, setLocName] = useRecoilState(locationState);
 
   let apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
@@ -23,6 +24,35 @@ function App() {
           (position) => {
             const { latitude, longitude } = position.coords;
             setGeolocation({ latitude, longitude });
+
+            const checkGoogleLoaded = () => {
+              if (window.google && window.google.maps) {
+                const geocoder = new window.google.maps.Geocoder();
+                const latlng = { lat: latitude, lng: longitude };
+
+                geocoder.geocode({ location: latlng }, (result, status) => {
+                  if (status === "OK") {
+                    // Reverse geocode the coordinates and set location state
+                    const location =
+                      result[0].address_components[3].short_name +
+                      " " +
+                      result[0].address_components[2].short_name;
+
+                    setLocName(location);
+                  } else {
+                    console.error("Geocoder failed due to: " + status);
+                  }
+                });
+              }
+            };
+
+            // Poll for Google Maps API to load
+            const interval = setInterval(() => {
+              if (window.google && window.google.maps) {
+                clearInterval(interval);
+                checkGoogleLoaded();
+              }
+            }, 200);
           },
           (error) => {
             console.error("Geolocation Error: ", error);
@@ -34,7 +64,7 @@ function App() {
     };
 
     fetchUserLocation();
-  }, [setGeolocation]);
+  }, [setGeolocation, setLocName]);
 
   return (
     <>
