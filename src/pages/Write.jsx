@@ -7,7 +7,7 @@ import spotIcon from "../assets/icons/ic_green.png";
 import CloseModal from "../components/UI/CloseModal";
 import { useRecoilValue } from "recoil";
 import { destinationState } from "../utils/atoms";
-import { metersToKms } from "../utils/calculate";
+import { calcFootSteps, metersToKms } from "../utils/calculate";
 
 const Container = styled.div`
   /* max-width: 400px; */
@@ -180,7 +180,7 @@ const Write = () => {
   // Calculate the travel time in minutes
   const travelTimeInMinutes = calculateTimeDifferenceInMinutes(
     destInfo.startTime,
-    destInfo.endTime
+    Date.now()
   );
 
   return (
@@ -228,7 +228,7 @@ const Write = () => {
           </InfoItem>
           <InfoItem>
             <InfoLabel>걸음 수</InfoLabel>
-            <InfoValue>3,429</InfoValue>
+            <InfoValue>{calcFootSteps(destInfo.meters)}</InfoValue>
           </InfoItem>
           <InfoItem>
             <InfoLabel>이동 시간</InfoLabel>

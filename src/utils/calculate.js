@@ -5,3 +5,7 @@ export const metersToKms = (meters) => {
     return meters / 1000 + "km";
   }
 };
+
+export const calcFootSteps = (meters) => {
+  return (meters / 0.75).toFixed(0);
+};
