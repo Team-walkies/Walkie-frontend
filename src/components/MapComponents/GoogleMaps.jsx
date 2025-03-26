@@ -81,6 +81,10 @@ const GoogleMaps = () => {
 
   const map = useMap();
 
+  useEffect(() => {
+    console.log(center);
+  }, []);
+
   const locations = [
     { key: "ilsanLakePark", location: { lat: 37.675418, lng: 126.769645 } },
     { key: "kintex", location: { lat: 37.667265, lng: 126.745635 } },
@@ -109,7 +113,7 @@ const GoogleMaps = () => {
     { key: "jeongbalsanPark", location: { lat: 37.661574, lng: 126.777272 } },
     { key: "hyangdongPark", location: { lat: 37.689079, lng: 126.765995 } },
     { key: "pungdongPark", location: { lat: 37.673939, lng: 126.75945 } },
-    { key: "nokcheonPark", location: { lat: 37.687542, lng: 126.75369 } },
+    { key: "abc", location: { lat: 37.6763, lng: 126.7692616 } },
   ];
 
   useEffect(() => {

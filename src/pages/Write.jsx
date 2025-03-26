@@ -7,6 +7,7 @@ import spotIcon from "../assets/icons/ic_green.png";
 import CloseModal from "../components/UI/CloseModal";
 import { useRecoilValue } from "recoil";
 import { destinationState } from "../utils/atoms";
+import { metersToKms } from "../utils/calculate";
 
 const Container = styled.div`
   /* max-width: 400px; */
@@ -223,7 +224,7 @@ const Write = () => {
         >
           <InfoItem>
             <InfoLabel>이동 거리</InfoLabel>
-            <InfoValue>{destInfo.meters / 1000}km</InfoValue>
+            <InfoValue>{metersToKms(destInfo.meters)}</InfoValue>
           </InfoItem>
           <InfoItem>
             <InfoLabel>걸음 수</InfoLabel>
@@ -231,7 +232,7 @@ const Write = () => {
           </InfoItem>
           <InfoItem>
             <InfoLabel>이동 시간</InfoLabel>
-            <InfoValue>{travelTimeInMinutes}m</InfoValue>
+            <InfoValue>{travelTimeInMinutes}분</InfoValue>
           </InfoItem>
         </div>
       </InfoSection>
