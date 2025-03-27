@@ -83,11 +83,11 @@ const GoogleMaps = () => {
 
   const map = useMap();
 
-  useEffect(() => {
-    console.log("center:", center);
-    findNearbySpots(center.lat, center.lng);
-    getSpotDetail(12);
-  }, []);
+  // useEffect(() => {
+  //   console.log("center:", center);
+  //   findNearbySpots(center.lat, center.lng);
+  //   getSpotDetail(12);
+  // }, []);
 
   const resetDestinationState = useResetRecoilState(destinationState);
 
@@ -137,6 +137,65 @@ const GoogleMaps = () => {
     { key: "hyangdongPark", location: { lat: 37.689079, lng: 126.765995 } },
     { key: "pungdongPark", location: { lat: 37.673939, lng: 126.75945 } },
     { key: "abc", location: { lat: 37.6763, lng: 126.7692616 } },
+  ];
+
+  const spot = [
+    {
+      id: 12,
+      locationName: "문화공원",
+      type: "PARK",
+      latitude: 37.6757,
+      longitude: 126.7649,
+    },
+    {
+      id: 13,
+      locationName: "강재공원",
+      type: "PARK",
+      latitude: 37.6735,
+      longitude: 126.7634,
+    },
+    {
+      id: 14,
+      locationName: "이물재공원",
+      type: "PARK",
+      latitude: 37.6737,
+      longitude: 126.7713,
+    },
+    {
+      id: 15,
+      locationName: "일산호수공원",
+      type: "PARK",
+      latitude: 37.6573,
+      longitude: 126.7638,
+    },
+    {
+      id: 16,
+      locationName: "고양종합운동장",
+      type: "ETC",
+      latitude: 37.677,
+      longitude: 126.743,
+    },
+    {
+      id: 17,
+      locationName: "성저공원",
+      type: "PARK",
+      latitude: 37.6816,
+      longitude: 126.7551,
+    },
+    {
+      id: 18,
+      locationName: "밤리단길 카페메노",
+      type: "CAFE",
+      latitude: 37.6727,
+      longitude: 126.7737,
+    },
+    {
+      id: 19,
+      locationName: "LAKE",
+      type: "CAFE",
+      latitude: 37.672,
+      longitude: 126.7589,
+    },
   ];
 
   useEffect(() => {
@@ -225,12 +284,23 @@ const GoogleMaps = () => {
           onClick={handleMapClick}
         >
           <UserMarker center={center} heading={heading} />
-          {locations.map((loc) => (
+          {/* {locations.map((loc) => (
             <PoiMarker
               key={loc.key}
               name={loc.key}
               poiKey={loc.key}
               location={loc.location}
+              clickFn={setSelected}
+              map={map}
+              selectedPoiKey={selected ? selected.key : null}
+            />
+          ))} */}
+          {spot.map((loc) => (
+            <PoiMarker
+              key={loc.id}
+              name={loc.locationName}
+              poiKey={loc.locationName}
+              location={{ lat: loc.latitude, lng: loc.longitude }}
               clickFn={setSelected}
               map={map}
               selectedPoiKey={selected ? selected.key : null}
