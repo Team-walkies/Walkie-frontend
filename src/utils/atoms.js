@@ -59,6 +59,7 @@ export const destinationState = atom({
     startTime: "",
     endTime: "",
     meters: 0,
+    type: "",
   },
   effects_UNSTABLE: [persistAtom],
 });

@@ -373,6 +373,7 @@ const BottomSheet = ({ closeFn, name, loc, map, center, type }) => {
               startTime: currentTime,
               endTime: 0,
               meters: meters,
+              type: type,
             });
             navigate(`/map/walk?lat=${loc.lat}&lng=${loc.lng}`, {
               state: { loc },

@@ -112,7 +112,10 @@ const WalkMaps = () => {
   const [insideCircle, setInsideCircle] = useState(false);
   const [btnText, setBtnText] = useState("중단하기");
   const [isCloseOpen, setIsCloseOpen] = useState(false);
-  const setDestInfo = useSetRecoilState(destinationState);
+  // const setDestInfo = useSetRecoilState(destinationState);
+  const [destInfo, setDestInfo] = useRecoilState(destinationState);
+
+  const spotType = destInfo.type;
 
   const map = useMap();
 
@@ -356,7 +359,12 @@ const WalkMaps = () => {
             onClick={handleMapClick}
           >
             <UserMarker center={center} heading={heading} />
-            <PoiMarker isDestination={true} location={destination2} map={map} />
+            <PoiMarker
+              isDestination={true}
+              location={destination2}
+              map={map}
+              type={spotType}
+            />
           </Map>
         ) : null}
       </MapContainer>
@@ -382,10 +390,10 @@ const WalkMaps = () => {
           <SnackBtn
             onClick={() => {
               if (insideCircle) {
-                setDestInfo((prevState) => ({
-                  ...prevState, // 기존 값 그대로 유지
-                  endTime: currentEndTime, // endTime만 현재 시간으로 설정
-                }));
+                // setDestInfo((prevState) => ({
+                //   ...prevState, // 기존 값 그대로 유지
+                //   endTime: currentEndTime, // endTime만 현재 시간으로 설정
+                // }));
                 navigate("/write");
               } else {
                 setIsCloseOpen(true);
