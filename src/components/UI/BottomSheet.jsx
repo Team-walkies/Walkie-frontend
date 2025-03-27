@@ -9,6 +9,8 @@ import x from "../../assets/icons/x.png";
 import { useSetRecoilState } from "recoil";
 import { destinationState } from "../../utils/atoms";
 import green from "../../assets/icons/ic_green.png";
+import coffee from "../../assets/icons/coffeeIcon.png";
+import flag from "../../assets/icons/flagIcon.png";
 
 const Wrapper = styled(motion.div)`
   background-color: white;
@@ -156,13 +158,23 @@ const EmptyView = styled.div`
 `;
 
 //loc : { lat: 37.675418, lng: 126.769645 }
-const BottomSheet = ({ closeFn, name, loc, map, center }) => {
+const BottomSheet = ({ closeFn, name, loc, map, center, type }) => {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const [curLocation, setCurLocation] = useState("");
   const setDestination = useSetRecoilState(destinationState);
 
   const [meters, setMeters] = useState(0);
+
+  let imgSrc;
+
+  if (type == "PARK") {
+    imgSrc = green;
+  } else if (type == "CAFE") {
+    imgSrc = coffee;
+  } else if (type == "ETC") {
+    imgSrc = flag;
+  }
 
   useEffect(() => {
     if (window.google && window.google.maps && loc && center) {
@@ -237,7 +249,7 @@ const BottomSheet = ({ closeFn, name, loc, map, center }) => {
       <ContentWrap>
         <Info>
           <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-            <img src={green} style={{ width: "20px", height: "20px" }} />
+            <img src={imgSrc} style={{ width: "20px", height: "20px" }} />
             <h3>{name}</h3>
           </div>
           <h4 className="b2" style={{ color: "var(--gray-400)" }}>

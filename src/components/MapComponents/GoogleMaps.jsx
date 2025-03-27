@@ -80,6 +80,7 @@ const GoogleMaps = () => {
   const [center, setCenter] = useRecoilState(geolocationState);
   const [heading, setHeading] = useState(0); // 🔄 핸드폰 방향
   const [selected, setSelected] = useState(null); // selected to hold null initially
+  const [spotType, setSpotType] = useState("");
 
   const map = useMap();
 
@@ -235,6 +236,7 @@ const GoogleMaps = () => {
 
   const handleMapClick = () => {
     setSelected(null);
+    setSpotType("");
   };
 
   return (
@@ -246,6 +248,7 @@ const GoogleMaps = () => {
           loc={selected.location}
           map={map}
           center={center}
+          type={spotType}
         />
       ) : null}
 
@@ -302,8 +305,10 @@ const GoogleMaps = () => {
               poiKey={loc.locationName}
               location={{ lat: loc.latitude, lng: loc.longitude }}
               clickFn={setSelected}
+              setType={setSpotType}
               map={map}
               selectedPoiKey={selected ? selected.key : null}
+              type={loc.type}
             />
           ))}
         </Map>

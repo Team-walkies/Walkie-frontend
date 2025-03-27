@@ -8,12 +8,24 @@ const PoiMarker = ({
   name,
   location,
   clickFn,
+  setType,
   selectedPoiKey,
   isDestination,
+  type,
 }) => {
   const [circleCenter, setCircleCenter] = useState(null);
 
   // console.log(name);
+
+  let assetURL;
+
+  if (type == "PARK") {
+    assetURL = "/assets/ic_MapIcon.png";
+  } else if (type == "CAFE") {
+    assetURL = "/assets/coffeeIcon.png";
+  } else if (type == "ETC") {
+    assetURL = "/assets/flagIcon.png";
+  }
 
   useEffect(() => {
     isDestination ? setCircleCenter(location) : null;
@@ -28,11 +40,12 @@ const PoiMarker = ({
         location: { lat: ev.latLng.lat(), lng: ev.latLng.lng() },
       };
 
-      clickFn(selectedPoi);
+      clickFn(selectedPoi); // 지도에서 클릭한 장소를 선택하는 함수
+      setType(type); // 타입을 설정하는 함수
 
       map.panTo(ev.latLng);
     },
-    [map, poiKey, location, clickFn]
+    [map, poiKey, location, clickFn, setType, type] // 의존성 배열에 setType과 type 추가
   );
 
   const isSelected = selectedPoiKey === poiKey;
@@ -53,7 +66,7 @@ const PoiMarker = ({
         clickable={true}
         onClick={handleClick}
         icon={{
-          url: "/assets/ic_MapIcon.png",
+          url: assetURL,
           scaledSize: new window.google.maps.Size(
             isSelected && !isDestination ? 40 : 28,
             isSelected && !isDestination ? 40 : 28
