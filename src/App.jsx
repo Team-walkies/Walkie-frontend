@@ -17,6 +17,7 @@ function App() {
   let apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
+    localStorage.setItem("accessToken", import.meta.env.VITE_TOKEN);
     // 유저의 위치를 가져오는 함수
     const fetchUserLocation = () => {
       if (navigator.geolocation) {

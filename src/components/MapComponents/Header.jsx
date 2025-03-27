@@ -20,9 +20,6 @@ const Header = ({ map, center }) => {
   const [curLocation, setCurLocation] = useState("");
   const locName = useRecoilValue(locationState);
 
-  console.log("name", locName);
-  useRecoilValue;
-
   useEffect(() => {
     const checkGoogleLoaded = () => {
       if (window.google && window.google.maps) {

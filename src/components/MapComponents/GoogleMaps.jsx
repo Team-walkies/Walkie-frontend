@@ -17,6 +17,7 @@ import BottomSheet from "../UI/BottomSheet";
 import PoiMarker from "./PoiMarker";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { destinationState, geolocationState } from "../../utils/atoms";
+import { findNearbySpots, getSpotDetail } from "../../api/spotAPI";
 
 const ToCurrent = styled.div`
   justify-self: end;
@@ -74,12 +75,19 @@ const BlackInfo = styled.div`
   padding: 8px 20px;
   border-radius: 99px;
 `;
+
 const GoogleMaps = () => {
   const [center, setCenter] = useRecoilState(geolocationState);
   const [heading, setHeading] = useState(0); // 🔄 핸드폰 방향
   const [selected, setSelected] = useState(null); // selected to hold null initially
 
   const map = useMap();
+
+  useEffect(() => {
+    console.log("center:", center);
+    findNearbySpots(center.lat, center.lng);
+    getSpotDetail(12);
+  }, []);
 
   const resetDestinationState = useResetRecoilState(destinationState);
 
