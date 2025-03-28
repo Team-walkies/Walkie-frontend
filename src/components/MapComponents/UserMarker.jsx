@@ -1,10 +1,17 @@
 import { AdvancedMarker, Marker } from "@vis.gl/react-google-maps";
+import { useEffect } from "react";
 
 const UserMarker = ({ center, heading }) => {
+  // useEffect(() => {
+  //   console.log("유저마커", center);
+  // }, []);
+
+  const latLng = new window.google.maps.LatLng(center.lat, center.lng);
+
   return (
     <>
       <Marker
-        position={center}
+        position={latLng}
         clickable={true}
         icon={{
           url: "/assets/myPosition.png",

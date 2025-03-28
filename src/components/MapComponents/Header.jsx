@@ -21,26 +21,23 @@ const Header = ({ map, center }) => {
   const locName = useRecoilValue(locationState);
 
   useEffect(() => {
+    console.log("center:", center);
+  }, []);
+
+  useEffect(() => {
     const checkGoogleLoaded = () => {
       if (window.google && window.google.maps) {
         const geocoder = new window.google.maps.Geocoder();
         const latlng = { lat: center.lat, lng: center.lng };
-
         geocoder.geocode({ location: latlng }, (result, status) => {
-          if (status == "OK") {
-            // console.log(
-            //   //??시 ??구
-            //   result[0].address_components[3].short_name +
-            //     " " +
-            //     result[0].address_components[2].short_name
-            // );
+          if (status === "OK") {
             setCurLocation(
               result[0].address_components[3].short_name +
                 " " +
                 result[0].address_components[2].short_name
             );
           } else {
-            console.log(console.error("아직 로드안됨"));
+            console.error("Geocoder failed due to: " + status);
           }
         });
       }
@@ -54,7 +51,7 @@ const Header = ({ map, center }) => {
     }, 200);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [center]);
 
   return (
     <Wrapper>
@@ -68,7 +65,7 @@ const Header = ({ map, center }) => {
           height: "24px",
         }}
       />
-      <h6>{locName}</h6>
+      <h6>{locName || curLocation}</h6>
     </Wrapper>
   );
 };

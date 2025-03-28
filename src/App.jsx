@@ -18,42 +18,46 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("accessToken", import.meta.env.VITE_TOKEN);
-    // 유저의 위치를 가져오는 함수
+
     const fetchUserLocation = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
-            setGeolocation({ latitude, longitude });
 
-            const checkGoogleLoaded = () => {
-              if (window.google && window.google.maps) {
-                const geocoder = new window.google.maps.Geocoder();
-                const latlng = { lat: latitude, lng: longitude };
+            // 위도와 경도가 유효한지 확인
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+              setGeolocation({ latitude, longitude });
 
-                geocoder.geocode({ location: latlng }, (result, status) => {
-                  if (status === "OK") {
-                    // Reverse geocode the coordinates and set location state
-                    const location =
-                      result[0].address_components[3].short_name +
-                      " " +
-                      result[0].address_components[2].short_name;
+              const checkGoogleLoaded = () => {
+                if (window.google && window.google.maps) {
+                  const geocoder = new window.google.maps.Geocoder();
+                  const latlng = { lat: latitude, lng: longitude };
 
-                    setLocName(location);
-                  } else {
-                    console.error("Geocoder failed due to: " + status);
-                  }
-                });
-              }
-            };
+                  geocoder.geocode({ location: latlng }, (result, status) => {
+                    if (status === "OK") {
+                      const location =
+                        result[0].address_components[3].short_name +
+                        " " +
+                        result[0].address_components[2].short_name;
 
-            // Poll for Google Maps API to load
-            const interval = setInterval(() => {
-              if (window.google && window.google.maps) {
-                clearInterval(interval);
-                checkGoogleLoaded();
-              }
-            }, 200);
+                      setLocName(location);
+                    } else {
+                      console.error("Geocoder failed due to: " + status);
+                    }
+                  });
+                }
+              };
+
+              const interval = setInterval(() => {
+                if (window.google && window.google.maps) {
+                  clearInterval(interval);
+                  checkGoogleLoaded();
+                }
+              }, 200);
+            } else {
+              console.error("Invalid geolocation coordinates.");
+            }
           },
           (error) => {
             console.error("Geolocation Error: ", error);

@@ -27,27 +27,20 @@ export const userIdState = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
+//유저의 위도, 경도
 export const geolocationState = atom({
   key: "geolocationState",
   default: {
-    longitude: 0,
-    latitude: 0,
+    lat: 0, // latitude 사용
+    lng: 0, // longitude 사용
   },
   effects_UNSTABLE: [persistAtom],
 });
 
+//??시 ??구
 export const locationState = atom({
   key: "locationState",
   default: "",
-  effects_UNSTABLE: [persistAtom],
-});
-
-export const destiCoordsState = atom({
-  key: "destiCoordsState",
-  default: {
-    longitude: 0,
-    latitude: 0,
-  },
   effects_UNSTABLE: [persistAtom],
 });
 

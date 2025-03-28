@@ -93,16 +93,13 @@ const GoogleMaps = () => {
   const resetDestinationState = useResetRecoilState(destinationState);
 
   useEffect(() => {
-    // destinationState 리셋
     resetDestinationState();
 
     // localStorage에서 recoil-persist의 destinationState만 삭제
     const persistedState = localStorage.getItem("recoil-persist");
     if (persistedState) {
       const parsedState = JSON.parse(persistedState);
-      // destinationState만 삭제
       delete parsedState.destinationState;
-      // localStorage에 새롭게 저장
       localStorage.setItem("recoil-persist", JSON.stringify(parsedState));
     }
 
@@ -204,8 +201,8 @@ const GoogleMaps = () => {
       navigator.geolocation.watchPosition(
         (position) => {
           setCenter({
-            lat: position.coords.latitude,
             lng: position.coords.longitude,
+            lat: position.coords.latitude,
           });
         },
         (error) => console.error("Geolocation error:", error),
@@ -252,7 +249,7 @@ const GoogleMaps = () => {
         />
       ) : null}
 
-      <Header map={map} center={center} />
+      {center && <Header map={map} center={center} />}
       <InfoBox>
         <BlackInfo>
           <span className="c1" style={{ color: "var(--gray-50)" }}>
@@ -286,7 +283,7 @@ const GoogleMaps = () => {
           }}
           onClick={handleMapClick}
         >
-          <UserMarker center={center} heading={heading} />
+          {center && <UserMarker center={center} heading={heading} />}
           {/* {locations.map((loc) => (
             <PoiMarker
               key={loc.key}
