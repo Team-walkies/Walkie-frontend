@@ -20,9 +20,9 @@ const Header = ({ map, center }) => {
   const [curLocation, setCurLocation] = useState("");
   const locName = useRecoilValue(locationState);
 
-  useEffect(() => {
-    console.log("center:", center);
-  }, []);
+  // useEffect(() => {
+  //   console.log("center:", center);
+  // }, []);
 
   useEffect(() => {
     const checkGoogleLoaded = () => {

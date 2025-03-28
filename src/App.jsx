@@ -1,3 +1,4 @@
+// App.jsx
 import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import MapPages from "./routes/MapPages";
@@ -13,54 +14,27 @@ import Write from "./pages/Write";
 function App() {
   const setGeolocation = useSetRecoilState(geolocationState);
   const [locName, setLocName] = useRecoilState(locationState);
+  const [locationPermissionGranted, setLocationPermissionGranted] =
+    useState(false);
 
   let apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
     localStorage.setItem("accessToken", import.meta.env.VITE_TOKEN);
 
-    const fetchUserLocation = () => {
+    // 위치 권한을 요청하는 함수
+    const requestLocationPermission = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
-
-            // 위도와 경도가 유효한지 확인
-            if (!isNaN(latitude) && !isNaN(longitude)) {
-              setGeolocation({ latitude, longitude });
-
-              const checkGoogleLoaded = () => {
-                if (window.google && window.google.maps) {
-                  const geocoder = new window.google.maps.Geocoder();
-                  const latlng = { lat: latitude, lng: longitude };
-
-                  geocoder.geocode({ location: latlng }, (result, status) => {
-                    if (status === "OK") {
-                      const location =
-                        result[0].address_components[3].short_name +
-                        " " +
-                        result[0].address_components[2].short_name;
-
-                      setLocName(location);
-                    } else {
-                      console.error("Geocoder failed due to: " + status);
-                    }
-                  });
-                }
-              };
-
-              const interval = setInterval(() => {
-                if (window.google && window.google.maps) {
-                  clearInterval(interval);
-                  checkGoogleLoaded();
-                }
-              }, 200);
-            } else {
-              console.error("Invalid geolocation coordinates.");
-            }
+            // 권한이 허용되면 위치를 저장
+            setGeolocation({ latitude, longitude });
+            setLocationPermissionGranted(true); // 위치 권한 허용 여부 상태 업데이트
           },
           (error) => {
             console.error("Geolocation Error: ", error);
+            setLocationPermissionGranted(false);
           }
         );
       } else {
@@ -68,26 +42,34 @@ function App() {
       }
     };
 
-    fetchUserLocation();
-  }, [setGeolocation, setLocName]);
+    // 위치 권한 요청
+    requestLocationPermission();
+  }, [setGeolocation]);
 
   return (
-    <>
-      <APIProvider
-        apiKey={apiKey}
-        onLoad={() => console.log("Maps API has loaded.")}
-      >
-        <ThemeProvider theme={theme}>
-          <Routes>
-            <Route path="/map/*" element={<MapPages />} />
-            <Route path="/write" element={<Write />} />
-          </Routes>
-          <Routes>
-            <Route path="/test" element={<Test />} />
-          </Routes>
-        </ThemeProvider>
-      </APIProvider>
-    </>
+    <APIProvider
+      apiKey={apiKey}
+      onLoad={() => console.log("Maps API has loaded.")}
+    >
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route
+            path="/map/*"
+            element={
+              locationPermissionGranted ? (
+                <MapPages />
+              ) : (
+                <div>위치 권한을 허용해주세요.</div>
+              )
+            }
+          />
+          <Route path="/write" element={<Write />} />
+        </Routes>
+        <Routes>
+          <Route path="/test" element={<Test />} />
+        </Routes>
+      </ThemeProvider>
+    </APIProvider>
   );
 }
 

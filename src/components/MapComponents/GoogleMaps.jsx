@@ -84,6 +84,21 @@ const GoogleMaps = () => {
 
   const map = useMap();
 
+  const isValidLocation = (location) => {
+    return location && !isNaN(location.lat) && !isNaN(location.lng);
+  };
+
+  useEffect(() => {
+    // 위치 정보가 제대로 설정되지 않았으면 return
+    if (!isValidLocation(center)) {
+      return;
+    }
+
+    if (map) {
+      map.setCenter(center); // 유효한 위치 값으로만 맵을 설정
+    }
+  }, [center, map]); // center나 map이 변경될 때마다 실행
+
   // useEffect(() => {
   //   console.log("center:", center);
   //   findNearbySpots(center.lat, center.lng);
