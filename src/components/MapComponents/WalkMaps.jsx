@@ -178,39 +178,6 @@ const WalkMaps = () => {
     }
   }, [isGoogleLoaded, map]);
 
-  //이동 테스트용 코드
-  // useEffect(() => {
-  //   if (isGoogleLoaded) {
-  //     let currentLat = 37.6766464;
-  //     let currentLng = 126.7695616;
-  //     const endLat = 37.683312;
-  //     const endLng = 126.763159;
-  //     const duration = 10000; // 10초 동안 이동
-  //     const steps = 100; // 이동을 100개의 작은 단계로 나누기
-  //     const latIncrement = (endLat - currentLat) / steps;
-  //     const lngIncrement = (endLng - currentLng) / steps;
-
-  //     let stepCount = 0;
-  //     const interval = setInterval(() => {
-  //       // 좌표 업데이트
-  //       currentLat += latIncrement;
-  //       currentLng += lngIncrement;
-  //       setCenter({
-  //         lat: currentLat,
-  //         lng: currentLng,
-  //       });
-  //       // console.log(currentLat, currentLng);
-
-  //       stepCount++;
-
-  //       // 10초가 지나면 종료
-  //       if (stepCount >= steps) {
-  //         clearInterval(interval);
-  //       }
-  //     }, duration / steps); // 100개의 작은 단계로 나누어 10초 동안 이동
-  //   }
-  // }, [isGoogleLoaded]);
-
   //경로 검색
   useEffect(() => {
     if (center && destination2) {

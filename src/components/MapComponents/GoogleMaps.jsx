@@ -91,7 +91,7 @@ const GoogleMaps = () => {
   };
 
   useEffect(() => {
-    // console.clear();
+    console.clear();
     // 위치 정보가 제대로 설정되지 않았으면 return
     if (!isValidLocation(center)) {
       return;
@@ -205,40 +205,42 @@ const GoogleMaps = () => {
       </ToCurrent>
 
       <MapContainer>
-        <Map
-          mapId={"91cb6cea28939556"}
-          defaultCenter={center}
-          defaultZoom={15}
-          style={{ width: "100%", height: "100%" }}
-          options={{
-            disableDefaultUI: true,
-            maxZoom: 20,
-            minZoom: 15,
-            streetViewControl: false,
-            mapTypeControl: false,
-            clickableIcons: false,
-            gestureHandling: "greedy",
-            zoomControl: false,
-          }}
-          onClick={handleMapClick}
-        >
-          {center && <UserMarker center={center} heading={heading} />}
+        {isValidLocation(center) && (
+          <Map
+            mapId={"91cb6cea28939556"}
+            defaultCenter={center}
+            defaultZoom={15}
+            style={{ width: "100%", height: "100%" }}
+            options={{
+              disableDefaultUI: true,
+              maxZoom: 20,
+              minZoom: 15,
+              streetViewControl: false,
+              mapTypeControl: false,
+              clickableIcons: false,
+              gestureHandling: "greedy",
+              zoomControl: false,
+            }}
+            onClick={handleMapClick}
+          >
+            {center && <UserMarker center={center} heading={heading} />}
 
-          {spots.map((loc) => (
-            <PoiMarker
-              key={loc.id}
-              name={loc.locationName}
-              poiKey={loc.locationName}
-              location={{ lat: loc.latitude, lng: loc.longitude }}
-              clickFn={setSelected}
-              setType={setSpotType}
-              map={map}
-              selectedPoiKey={selected ? selected.key : null}
-              type={loc.type}
-              spotId={loc.id}
-            />
-          ))}
-        </Map>
+            {spots.map((loc) => (
+              <PoiMarker
+                key={loc.id}
+                name={loc.locationName}
+                poiKey={loc.locationName}
+                location={{ lat: loc.latitude, lng: loc.longitude }}
+                clickFn={setSelected}
+                setType={setSpotType}
+                map={map}
+                selectedPoiKey={selected ? selected.key : null}
+                type={loc.type}
+                spotId={loc.id}
+              />
+            ))}
+          </Map>
+        )}
       </MapContainer>
     </div>
   );
