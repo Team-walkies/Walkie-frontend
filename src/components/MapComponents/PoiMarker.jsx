@@ -79,11 +79,12 @@ const PoiMarker = ({
             ),
           }}
           // label={{
-          //   text: name, // 마커 위에 표시할 텍스트
+          //   text: String(name), // 마커 위에 표시할 텍스트
           //   fontSize: "12px", // 글자 크기
           //   fontWeight: "bold", // 글자 굵기
           //   color: "var(--gray-500)", // 글자 색상
           // }}
+          // labelOrigin={new google.maps.Point(50, 20)} // y 값을 음수로 설정하여 마커 위에 레이블 위치
         />
       </div>
     </>

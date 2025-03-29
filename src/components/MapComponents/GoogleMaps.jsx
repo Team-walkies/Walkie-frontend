@@ -223,17 +223,7 @@ const GoogleMaps = () => {
           onClick={handleMapClick}
         >
           {center && <UserMarker center={center} heading={heading} />}
-          {/* {locations.map((loc) => (
-            <PoiMarker
-              key={loc.key}
-              name={loc.key}
-              poiKey={loc.key}
-              location={loc.location}
-              clickFn={setSelected}
-              map={map}
-              selectedPoiKey={selected ? selected.key : null}
-            />
-          ))} */}
+
           {spots.map((loc) => (
             <PoiMarker
               key={loc.id}
