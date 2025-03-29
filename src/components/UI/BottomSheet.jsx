@@ -210,7 +210,7 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
   const currentTime = new Date().toISOString();
 
   useEffect(() => {
-    console.log(name, loc);
+    // console.log(name, loc);
     const checkGoogleLoaded = () => {
       if (window.google && window.google.maps && loc) {
         const geocoder = new window.google.maps.Geocoder();
@@ -261,10 +261,11 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
         <Info>
           <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
             <img src={imgSrc} style={{ width: "20px", height: "20px" }} />
-            <h3>{name}</h3>
+            {/* <h3>{name}</h3> */}
+            <h3>{spotDetail.locationName}</h3>
           </div>
           <h4 className="b2" style={{ color: "var(--gray-400)" }}>
-            {curLocation} | {meters}m
+            {spotDetail.streetAddress} | {meters}m
           </h4>
           {/* <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             <span className="b2">여기서</span>
@@ -285,7 +286,9 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
             <span className="b2" style={{ color: "var(--gray-700)" }}>
               방문자
             </span>
-            <h6 style={{ color: "var(--gray-700)" }}>32명</h6>
+            <h6 style={{ color: "var(--gray-700)" }}>
+              {spotDetail.visitCount}명
+            </h6>
           </MiddleBox>
           <MiddleBox>
             <img
@@ -296,7 +299,9 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
             <span className="b2" style={{ color: "var(--gray-700)" }}>
               리뷰
             </span>
-            <h6 style={{ color: "var(--gray-700)" }}>5개</h6>
+            <h6 style={{ color: "var(--gray-700)" }}>
+              {spotDetail.reviewCount}개
+            </h6>
           </MiddleBox>
           <MiddleBox>
             <img
@@ -326,24 +331,25 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
           <div>
             {/* 사진 섹션 */}
             <div style={{ padding: "20px 0px 24px 0px" }}>
-              <h5>사진 3</h5>
+              <h5>사진 {spotDetail.photoUrls.length}</h5>
               <ImgWrap style={{ display: expanded ? "flex" : "none" }}>
-                {/* <div style={{ display: "flex", gap: "4px" }}>
-                  <img src="/assets/photo1.jpg" />
-                  <img src="/assets/photo1.jpg" />
-                  <img src="/assets/photo1.jpg" />
-                  <img src="/assets/photo2.jpg" />
-                  <img src="/assets/photo3.jpg" />
-                </div> */}
-                <EmptyView>
-                  <span>사진이 아직 없어요</span>
-                </EmptyView>
+                {spotDetail.photoUrls.length == 0 ? (
+                  <EmptyView>
+                    <span>사진이 아직 없어요</span>
+                  </EmptyView>
+                ) : (
+                  <div style={{ display: "flex", gap: "4px" }}>
+                    {spotDetail.photoUrls.map((url, i) => (
+                      <img src={url} key={i} />
+                    ))}
+                  </div>
+                )}
               </ImgWrap>
             </div>
 
             {/* 리뷰 섹션 */}
             <ReviewWrap>
-              <h5>리뷰 5</h5>
+              <h5>리뷰 {spotDetail.reviewCount}</h5>
               <ReviewBox>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
