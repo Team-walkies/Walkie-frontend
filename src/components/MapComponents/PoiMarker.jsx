@@ -3,21 +3,6 @@ import { useMap, AdvancedMarker, Pin, Marker } from "@vis.gl/react-google-maps";
 import Circle from "./Circle";
 import styled from "styled-components";
 
-const MarkerWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SpotName = styled.h1`
-  font-size: 14px;
-  font-weight: 600;
-  margin-top: 8px;
-  color: ${(props) =>
-    props.isSelected ? "#0daeff" : "#000"}; // 선택된 경우 색상 변경
-`;
-
 const PoiMarker = ({
   map,
   poiKey,
@@ -93,6 +78,12 @@ const PoiMarker = ({
               isSelected && !isDestination ? 20 : 14
             ),
           }}
+          // label={{
+          //   text: name, // 마커 위에 표시할 텍스트
+          //   fontSize: "12px", // 글자 크기
+          //   fontWeight: "bold", // 글자 굵기
+          //   color: "var(--gray-500)", // 글자 색상
+          // }}
         />
       </div>
     </>
