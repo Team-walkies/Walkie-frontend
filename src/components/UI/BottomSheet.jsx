@@ -14,6 +14,7 @@ import coffee from "../../assets/icons/coffeeIcon.png";
 import flag from "../../assets/icons/flagIcon.png";
 import { getSpotDetail, getSpotReviews } from "../../api/spotAPI";
 import { calTime } from "../../utils/date";
+import grayLine from "../../assets/images/grayLine.png";
 
 const Wrapper = styled(motion.div)`
   background-color: white;
@@ -316,6 +317,7 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
               {spotDetail.visitCount}명
             </h6>
           </MiddleBox>
+          <img src={grayLine} />
           <MiddleBox>
             <img
               style={{ width: "20px", height: "20px" }}
@@ -329,6 +331,7 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
               {spotDetail.reviewCount}개
             </h6>
           </MiddleBox>
+          <img src={grayLine} />
           <MiddleBox>
             <img
               style={{ width: "20px", height: "20px" }}
@@ -338,9 +341,11 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
             <span className="b2" style={{ color: "var(--gray-700)" }}>
               나의 탐험
             </span>
-            <h6 style={{ color: "var(--gray-700)" }}>
-              {spotDetail.explored ? "완료" : "미완료"}
-            </h6>
+            {spotDetail.explored ? (
+              <h6 style={{ color: "var(--gray-700)" }}>완료</h6>
+            ) : (
+              <h6 style={{ color: "var(--gray-400)" }}>미완료</h6>
+            )}
           </MiddleBox>
         </Middle>
 

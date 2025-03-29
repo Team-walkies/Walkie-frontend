@@ -11,6 +11,7 @@ import styled, { ThemeProvider } from "styled-components";
 import Test from "./pages/Test";
 import Write from "./pages/Write";
 import BridgeTest from "./pages/BridgeTest";
+import Rewrite from "./pages/Rewrite";
 
 function App() {
   const setGeolocation = useSetRecoilState(geolocationState);
@@ -66,6 +67,7 @@ function App() {
             }
           />
           <Route path="/write" element={<Write />} />
+          <Route path="/rewrite/:id" element={<Rewrite />} />
         </Routes>
         <Routes>
           <Route path="/test" element={<Test />} />

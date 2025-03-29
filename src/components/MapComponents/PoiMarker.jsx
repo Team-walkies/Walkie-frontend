@@ -1,6 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
 import { useMap, AdvancedMarker, Pin, Marker } from "@vis.gl/react-google-maps";
 import Circle from "./Circle";
+import styled from "styled-components";
+
+const MarkerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SpotName = styled.h1`
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 8px;
+  color: ${(props) =>
+    props.isSelected ? "#0daeff" : "#000"}; // 선택된 경우 색상 변경
+`;
 
 const PoiMarker = ({
   map,
@@ -52,31 +68,33 @@ const PoiMarker = ({
 
   return (
     <>
-      <Circle
-        radius={100}
-        center={circleCenter}
-        strokeColor={"#0daeff"}
-        strokeOpacity={1}
-        strokeWeight={0}
-        fillColor={"#0daeff"}
-        fillOpacity={0.15}
-      />
-      <Marker
-        position={location}
-        clickable={true}
-        onClick={handleClick}
-        icon={{
-          url: assetURL,
-          scaledSize: new window.google.maps.Size(
-            isSelected && !isDestination ? 40 : 28,
-            isSelected && !isDestination ? 40 : 28
-          ), // Change size if selected
-          anchor: new window.google.maps.Point(
-            isSelected && !isDestination ? 20 : 14,
-            isSelected && !isDestination ? 20 : 14
-          ),
-        }}
-      />
+      <div>
+        <Circle
+          radius={100}
+          center={circleCenter}
+          strokeColor={"#0daeff"}
+          strokeOpacity={1}
+          strokeWeight={0}
+          fillColor={"#0daeff"}
+          fillOpacity={0.15}
+        />
+        <Marker
+          position={location}
+          clickable={true}
+          onClick={handleClick}
+          icon={{
+            url: assetURL,
+            scaledSize: new window.google.maps.Size(
+              isSelected && !isDestination ? 40 : 28,
+              isSelected && !isDestination ? 40 : 28
+            ), // Change size if selected
+            anchor: new window.google.maps.Point(
+              isSelected && !isDestination ? 20 : 14,
+              isSelected && !isDestination ? 20 : 14
+            ),
+          }}
+        />
+      </div>
     </>
   );
 };
