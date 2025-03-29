@@ -194,7 +194,7 @@ const GoogleMaps = () => {
             1시간내 거리
           </span>
           <span className="c1" style={{ color: "var(--blue-200)" }}>
-            {spots.length}개
+            {spots?.length}개
           </span>
         </BlackInfo>
       </InfoBox>
