@@ -56,6 +56,11 @@ export const getSpotReviews = async (spotId) => {
         },
       }
     );
+    console.log(
+      `스팟 ${spotId}번 리뷰 조회 성공 : `,
+      response.data.data.reviews
+    );
+    return response.data.data.reviews;
   } catch (error) {
     console.log(`스팟 ${spotId}번 리뷰 조회 실패 : `, error);
   }

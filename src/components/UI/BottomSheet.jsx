@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import reviewIcon from "../../assets/icons/ic_review.png";
 import exploreIcon from "../../assets/icons/ic_explore.png";
+import exploreColorIcon from "../../assets/icons/ic_explore_color.png";
 import visitorsIcon from "../../assets/icons/ic_visitors.png";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +12,8 @@ import { destinationState } from "../../utils/atoms";
 import green from "../../assets/icons/ic_green.png";
 import coffee from "../../assets/icons/coffeeIcon.png";
 import flag from "../../assets/icons/flagIcon.png";
-import { getSpotDetail } from "../../api/spotAPI";
+import { getSpotDetail, getSpotReviews } from "../../api/spotAPI";
+import { calTime } from "../../utils/date";
 
 const Wrapper = styled(motion.div)`
   background-color: white;
@@ -139,6 +141,23 @@ const BlueBtn = styled.button`
   left: 16px;
   box-sizing: border-box;
 `;
+
+const GrayBtn = styled.button`
+  width: calc(100% - 32px);
+  background-color: ${(props) => props.theme.colors.gray200};
+  padding: 15px 0;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  color: white;
+  position: fixed;
+  bottom: 34px;
+  left: 16px;
+  box-sizing: border-box;
+`;
+
 const CloseBtn = styled.img`
   position: absolute;
   left: 16px;
@@ -165,6 +184,7 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
   const [curLocation, setCurLocation] = useState("");
   const setDestination = useSetRecoilState(destinationState);
   const [spotDetail, setSpotDetail] = useState({});
+  const [reviews, setReviews] = useState([]);
 
   const [meters, setMeters] = useState(0);
 
@@ -204,8 +224,14 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
       setSpotDetail(response);
     };
 
+    const fetchSpotReviews = async () => {
+      const response = await getSpotReviews(spotId);
+      setReviews(response);
+    };
+
     fetchSpotDetail();
-  }, [loc, center]);
+    fetchSpotReviews();
+  }, []);
 
   const currentTime = new Date().toISOString();
 
@@ -306,13 +332,15 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
           <MiddleBox>
             <img
               style={{ width: "20px", height: "20px" }}
-              src={exploreIcon}
+              src={spotDetail.explored ? exploreColorIcon : exploreIcon}
               alt="탐색"
             />
             <span className="b2" style={{ color: "var(--gray-700)" }}>
               나의 탐험
             </span>
-            <h6 style={{ color: "var(--gray-700)" }}>미완료</h6>
+            <h6 style={{ color: "var(--gray-700)" }}>
+              {spotDetail.explored ? "완료" : "미완료"}
+            </h6>
           </MiddleBox>
         </Middle>
 
@@ -350,7 +378,7 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
             {/* 리뷰 섹션 */}
             <ReviewWrap>
               <h5>리뷰 {spotDetail.reviewCount}</h5>
-              <ReviewBox>
+              {/* <ReviewBox>
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
@@ -375,33 +403,67 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
                   다 좋았는데 벌레가 좀 많음ㅠㅠ 산책하기엔 조금 비추천.. 담에
                   다시 안올거야
                 </span>
-              </ReviewBox>
-              <EmptyView>
-                <span>리뷰가 아직 없어요</span>
-              </EmptyView>
+              </ReviewBox> */}
+
+              {reviews.length == 0 ? (
+                <EmptyView>
+                  <span>리뷰가 아직 없어요</span>
+                </EmptyView>
+              ) : (
+                <>
+                  {reviews.map((review) => (
+                    <ReviewBox>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
+                        <span className="b2">닉네임몰랑가</span>
+                        <span
+                          className="c1"
+                          style={{ color: "var(--gray-400)" }}
+                        >
+                          {calTime(review.date)}
+                        </span>
+                      </div>
+                      <span className="b2">{review.review}</span>
+                    </ReviewBox>
+                  ))}
+                </>
+              )}
             </ReviewWrap>
           </div>
         ) : null}
 
-        <div
-          onClick={() => {
-            setDestination({
-              name: name,
-              startTime: currentTime,
-              endTime: 0,
-              meters: meters,
-              type: type,
-            });
-            navigate(`/map/walk?lat=${loc.lat}&lng=${loc.lng}`, {
-              state: { loc },
-            });
-          }}
-        >
-          <BlueBtn>
-            <span className="b1" style={{ color: "white" }}>
-              출발하기
-            </span>
-          </BlueBtn>
+        <div>
+          {spotDetail.daysUntilNextVisit == 0 ? (
+            <BlueBtn
+              onClick={() => {
+                setDestination({
+                  name: name,
+                  startTime: currentTime,
+                  endTime: 0,
+                  meters: meters,
+                  type: type,
+                });
+                navigate(`/map/walk?lat=${loc.lat}&lng=${loc.lng}`, {
+                  state: { loc },
+                });
+              }}
+            >
+              <span className="b1" style={{ color: "white" }}>
+                출발하기
+              </span>
+            </BlueBtn>
+          ) : (
+            <GrayBtn>
+              <span className="b1" style={{ color: "#9ca1ab" }}>
+                {spotDetail.daysUntilNextVisit}일 뒤에 가능해요
+              </span>
+            </GrayBtn>
+          )}
         </div>
       </ContentWrap>
     </Wrapper>
