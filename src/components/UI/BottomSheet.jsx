@@ -15,6 +15,7 @@ import flag from "../../assets/icons/flagIcon.png";
 import { getSpotDetail, getSpotReviews } from "../../api/spotAPI";
 import { calTime } from "../../utils/date";
 import grayLine from "../../assets/images/grayLine.png";
+import { sendHaptic, startCountingSteps } from "../../utils/bridge";
 
 const Wrapper = styled(motion.div)`
   background-color: white;
@@ -453,6 +454,8 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
                   meters: meters,
                   type: type,
                 });
+                sendHaptic();
+                startCountingSteps();
                 navigate(`/map/walk?lat=${loc.lat}&lng=${loc.lng}`, {
                   state: { loc },
                 });
@@ -463,7 +466,11 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
               </span>
             </BlueBtn>
           ) : (
-            <GrayBtn>
+            <GrayBtn
+              onClick={() => {
+                sendHaptic();
+              }}
+            >
               <span className="b1" style={{ color: "#9ca1ab" }}>
                 {spotDetail.daysUntilNextVisit}일 뒤에 가능해요
               </span>

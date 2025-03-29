@@ -91,7 +91,6 @@ const GoogleMaps = () => {
   };
 
   useEffect(() => {
-    console.clear();
     // 위치 정보가 제대로 설정되지 않았으면 return
     if (!isValidLocation(center)) {
       return;

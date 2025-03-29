@@ -3,7 +3,6 @@ import { useEffect } from "react";
 
 const UserMarker = ({ center, heading }) => {
   const latLng = new window.google.maps.LatLng(center.lat, center.lng);
-
   return (
     <>
       <Marker
@@ -17,7 +16,7 @@ const UserMarker = ({ center, heading }) => {
       />
 
       {/*  바라보는 방향  */}
-      <AdvancedMarker position={center}>
+      <AdvancedMarker position={latLng}>
         <div
           style={{
             width: "0px",

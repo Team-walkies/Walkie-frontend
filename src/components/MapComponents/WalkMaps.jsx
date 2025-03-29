@@ -9,6 +9,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { destinationState, geolocationState } from "../../utils/atoms";
 import { useLocation, useNavigate } from "react-router-dom";
 import CloseModal from "../UI/CloseModal";
+import { sendHaptic } from "../../utils/bridge";
 
 const ToCurrent = styled.div`
   justify-self: end;
@@ -361,6 +362,7 @@ const WalkMaps = () => {
                 //   ...prevState, // 기존 값 그대로 유지
                 //   endTime: currentEndTime, // endTime만 현재 시간으로 설정
                 // }));
+                sendHaptic();
                 navigate("/write");
               } else {
                 setIsCloseOpen(true);

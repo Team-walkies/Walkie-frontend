@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useMap, AdvancedMarker, Pin, Marker } from "@vis.gl/react-google-maps";
 import Circle from "./Circle";
 import styled from "styled-components";
+import { sendHaptic } from "../../utils/bridge";
 
 const PoiMarker = ({
   map,
@@ -43,6 +44,7 @@ const PoiMarker = ({
 
       clickFn(selectedPoi); // 지도에서 클릭한 장소를 선택하는 함수
       setType(type); // 타입을 설정하는 함수
+      sendHaptic();
 
       map.panTo(ev.latLng);
     },

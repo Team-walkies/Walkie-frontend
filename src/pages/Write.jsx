@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import x from "../assets/icons/x.png";
 import grayStar from "../assets/icons/ic_star_gray.png";
@@ -8,6 +8,7 @@ import CloseModal from "../components/UI/CloseModal";
 import { useRecoilValue } from "recoil";
 import { destinationState } from "../utils/atoms";
 import { calcFootSteps, metersToKms } from "../utils/calculate";
+import { finishWebView, getStepsFromMobile } from "../utils/bridge";
 
 const Container = styled.div`
   /* max-width: 400px; */
@@ -160,6 +161,7 @@ const Write = () => {
   const [review, setReview] = useState("");
   const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
   const destInfo = useRecoilValue(destinationState);
+  const [steps, setSteps] = useState(0);
 
   const handleRatingClick = (index) => {
     setRating(index + 1);
@@ -183,6 +185,10 @@ const Write = () => {
     Date.now()
   );
 
+  useEffect(() => {
+    setSteps(getStepsFromMobile());
+  }, []);
+
   return (
     <Container>
       {isCloseModalOpen && (
@@ -195,7 +201,7 @@ const Write = () => {
       )}
       <Header>
         <CloseBtn src={x} onClick={() => setIsCloseModalOpen(true)} />
-        <CompleteButton>완료</CompleteButton>
+        <CompleteButton onClick={() => finishWebView()}>완료</CompleteButton>
       </Header>
 
       <Title>스팟에 도착했어요!</Title>
