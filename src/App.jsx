@@ -10,6 +10,7 @@ import { theme } from "./utils/theme";
 import styled, { ThemeProvider } from "styled-components";
 import Test from "./pages/Test";
 import Write from "./pages/Write";
+import BridgeTest from "./pages/BridgeTest";
 
 function App() {
   const setGeolocation = useSetRecoilState(geolocationState);
@@ -19,6 +20,7 @@ function App() {
 
   let apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
+  //위치 권한 확인인
   useEffect(() => {
     localStorage.setItem("accessToken", import.meta.env.VITE_TOKEN);
 
@@ -67,6 +69,7 @@ function App() {
         </Routes>
         <Routes>
           <Route path="/test" element={<Test />} />
+          <Route path="/bridgeTest" element={<BridgeTest />} />
         </Routes>
       </ThemeProvider>
     </APIProvider>

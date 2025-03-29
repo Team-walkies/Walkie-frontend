@@ -11,6 +11,7 @@ import { destinationState } from "../../utils/atoms";
 import green from "../../assets/icons/ic_green.png";
 import coffee from "../../assets/icons/coffeeIcon.png";
 import flag from "../../assets/icons/flagIcon.png";
+import { getSpotDetail } from "../../api/spotAPI";
 
 const Wrapper = styled(motion.div)`
   background-color: white;
@@ -158,7 +159,7 @@ const EmptyView = styled.div`
 `;
 
 //loc : { lat: 37.675418, lng: 126.769645 }
-const BottomSheet = ({ closeFn, name, loc, map, center, type }) => {
+const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const [curLocation, setCurLocation] = useState("");
@@ -175,6 +176,8 @@ const BottomSheet = ({ closeFn, name, loc, map, center, type }) => {
   } else if (type == "ETC") {
     imgSrc = flag;
   }
+
+  // console.log("spotId", spotId);
 
   useEffect(() => {
     if (window.google && window.google.maps && loc && center) {

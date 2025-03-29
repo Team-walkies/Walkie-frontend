@@ -81,6 +81,8 @@ const GoogleMaps = () => {
   const [heading, setHeading] = useState(0); // 🔄 핸드폰 방향
   const [selected, setSelected] = useState(null); // selected to hold null initially
   const [spotType, setSpotType] = useState("");
+  const resetDestinationState = useResetRecoilState(destinationState);
+  const [spots, setSpots] = useState([]);
 
   const map = useMap();
 
@@ -89,24 +91,31 @@ const GoogleMaps = () => {
   };
 
   useEffect(() => {
+    // console.clear();
     // 위치 정보가 제대로 설정되지 않았으면 return
     if (!isValidLocation(center)) {
       return;
     }
 
-    if (map) {
-      map.setCenter(center); // 유효한 위치 값으로만 맵을 설정
-    }
+    // if (map) {
+    //   map.setCenter(center); // 유효한 위치 값으로만 맵을 설정
+    // }
   }, [center, map]); // center나 map이 변경될 때마다 실행
 
-  // useEffect(() => {
-  //   console.log("center:", center);
-  //   findNearbySpots(center.lat, center.lng);
-  //   getSpotDetail(12);
-  // }, []);
+  //데이터 페칭
+  useEffect(() => {
+    console.log("center:", center);
 
-  const resetDestinationState = useResetRecoilState(destinationState);
+    const fetchNearbySpots = async () => {
+      const response = await findNearbySpots(center.lat, center.lng);
+      console.log("response:", response);
+      setSpots(response);
+    };
 
+    fetchNearbySpots();
+  }, [center]);
+
+  //기존 데이터 삭제
   useEffect(() => {
     resetDestinationState();
 
@@ -152,64 +161,64 @@ const GoogleMaps = () => {
     { key: "abc", location: { lat: 37.6763, lng: 126.7692616 } },
   ];
 
-  const spot = [
-    {
-      id: 12,
-      locationName: "문화공원",
-      type: "PARK",
-      latitude: 37.6757,
-      longitude: 126.7649,
-    },
-    {
-      id: 13,
-      locationName: "강재공원",
-      type: "PARK",
-      latitude: 37.6735,
-      longitude: 126.7634,
-    },
-    {
-      id: 14,
-      locationName: "이물재공원",
-      type: "PARK",
-      latitude: 37.6737,
-      longitude: 126.7713,
-    },
-    {
-      id: 15,
-      locationName: "일산호수공원",
-      type: "PARK",
-      latitude: 37.6573,
-      longitude: 126.7638,
-    },
-    {
-      id: 16,
-      locationName: "고양종합운동장",
-      type: "ETC",
-      latitude: 37.677,
-      longitude: 126.743,
-    },
-    {
-      id: 17,
-      locationName: "성저공원",
-      type: "PARK",
-      latitude: 37.6816,
-      longitude: 126.7551,
-    },
-    {
-      id: 18,
-      locationName: "밤리단길 카페메노",
-      type: "CAFE",
-      latitude: 37.6727,
-      longitude: 126.7737,
-    },
-    {
-      id: 19,
-      locationName: "LAKE",
-      type: "CAFE",
-      latitude: 37.672,
-      longitude: 126.7589,
-    },
-  ];
+  // const spot = [
+  //   {
+  //     id: 12,
+  //     locationName: "문화공원",
+  //     type: "PARK",
+  //     latitude: 37.6757,
+  //     longitude: 126.7649,
+  //   },
+  //   {
+  //     id: 13,
+  //     locationName: "강재공원",
+  //     type: "PARK",
+  //     latitude: 37.6735,
+  //     longitude: 126.7634,
+  //   },
+  //   {
+  //     id: 14,
+  //     locationName: "이물재공원",
+  //     type: "PARK",
+  //     latitude: 37.6737,
+  //     longitude: 126.7713,
+  //   },
+  //   {
+  //     id: 15,
+  //     locationName: "일산호수공원",
+  //     type: "PARK",
+  //     latitude: 37.6573,
+  //     longitude: 126.7638,
+  //   },
+  //   {
+  //     id: 16,
+  //     locationName: "고양종합운동장",
+  //     type: "ETC",
+  //     latitude: 37.677,
+  //     longitude: 126.743,
+  //   },
+  //   {
+  //     id: 17,
+  //     locationName: "성저공원",
+  //     type: "PARK",
+  //     latitude: 37.6816,
+  //     longitude: 126.7551,
+  //   },
+  //   {
+  //     id: 18,
+  //     locationName: "밤리단길 카페메노",
+  //     type: "CAFE",
+  //     latitude: 37.6727,
+  //     longitude: 126.7737,
+  //   },
+  //   {
+  //     id: 19,
+  //     locationName: "LAKE",
+  //     type: "CAFE",
+  //     latitude: 37.672,
+  //     longitude: 126.7589,
+  //   },
+  // ];
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -242,9 +251,9 @@ const GoogleMaps = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(selected);
-  // }, [selected]);
+  useEffect(() => {
+    console.log(selected);
+  }, [selected]);
 
   const handleMapClick = () => {
     setSelected(null);
@@ -255,6 +264,7 @@ const GoogleMaps = () => {
     <div>
       {selected ? (
         <BottomSheet
+          spotId={selected.id}
           closeFn={setSelected}
           name={selected.key}
           loc={selected.location}
@@ -310,7 +320,7 @@ const GoogleMaps = () => {
               selectedPoiKey={selected ? selected.key : null}
             />
           ))} */}
-          {spot.map((loc) => (
+          {spots.map((loc) => (
             <PoiMarker
               key={loc.id}
               name={loc.locationName}
@@ -321,6 +331,7 @@ const GoogleMaps = () => {
               map={map}
               selectedPoiKey={selected ? selected.key : null}
               type={loc.type}
+              spotId={loc.id}
             />
           ))}
         </Map>
