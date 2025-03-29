@@ -5,7 +5,7 @@ const token = localStorage.getItem("accessToken");
 
 //주변 스팟 검색
 export const findNearbySpots = async (latitude, longitude) => {
-  console.log(latitude, longitude);
+  // console.log(latitude, longitude);
   try {
     const response = await axios.post(
       `${BASE_URL}/spots/nearby`,

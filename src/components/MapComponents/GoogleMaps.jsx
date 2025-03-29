@@ -108,12 +108,11 @@ const GoogleMaps = () => {
 
     const fetchNearbySpots = async () => {
       const response = await findNearbySpots(center.lat, center.lng);
-      console.log("response:", response);
       setSpots(response);
     };
 
     fetchNearbySpots();
-  }, [center]);
+  }, []);
 
   //기존 데이터 삭제
   useEffect(() => {
@@ -130,104 +129,19 @@ const GoogleMaps = () => {
     console.log("destinationState가 초기화되었습니다.");
   }, [resetDestinationState]);
 
-  const locations = [
-    { key: "ilsanLakePark", location: { lat: 37.675418, lng: 126.769645 } },
-    { key: "kintex", location: { lat: 37.667265, lng: 126.745635 } },
-    { key: "lafesta", location: { lat: 37.661486, lng: 126.768109 } },
-    { key: "westernDome", location: { lat: 37.662223, lng: 126.770752 } },
-    { key: "oneMount", location: { lat: 37.660203, lng: 126.752867 } },
-    { key: "aquaPlanet", location: { lat: 37.660748, lng: 126.753944 } },
-    { key: "우리집", location: { lat: 37.6763, lng: 126.7728384 } },
-    {
-      key: "hyundaiDepartmentStore",
-      location: { lat: 37.646979, lng: 126.788208 },
-    },
-    {
-      key: "gomsoSaltedShrimpMarket",
-      location: { lat: 37.683312, lng: 126.763159 },
-    },
-    {
-      key: "donggukUniversityIlsanHospital",
-      location: { lat: 37.673467, lng: 126.780789 },
-    },
-    {
-      key: "hallymUniversityMedicalCenter",
-      location: { lat: 37.67606, lng: 126.771648 },
-    },
-    { key: "goyangCityHall", location: { lat: 37.656364, lng: 126.831722 } },
-    { key: "jeongbalsanPark", location: { lat: 37.661574, lng: 126.777272 } },
-    { key: "hyangdongPark", location: { lat: 37.689079, lng: 126.765995 } },
-    { key: "pungdongPark", location: { lat: 37.673939, lng: 126.75945 } },
-    { key: "abc", location: { lat: 37.6763, lng: 126.7692616 } },
-  ];
-
-  // const spot = [
-  //   {
-  //     id: 12,
-  //     locationName: "문화공원",
-  //     type: "PARK",
-  //     latitude: 37.6757,
-  //     longitude: 126.7649,
-  //   },
-  //   {
-  //     id: 13,
-  //     locationName: "강재공원",
-  //     type: "PARK",
-  //     latitude: 37.6735,
-  //     longitude: 126.7634,
-  //   },
-  //   {
-  //     id: 14,
-  //     locationName: "이물재공원",
-  //     type: "PARK",
-  //     latitude: 37.6737,
-  //     longitude: 126.7713,
-  //   },
-  //   {
-  //     id: 15,
-  //     locationName: "일산호수공원",
-  //     type: "PARK",
-  //     latitude: 37.6573,
-  //     longitude: 126.7638,
-  //   },
-  //   {
-  //     id: 16,
-  //     locationName: "고양종합운동장",
-  //     type: "ETC",
-  //     latitude: 37.677,
-  //     longitude: 126.743,
-  //   },
-  //   {
-  //     id: 17,
-  //     locationName: "성저공원",
-  //     type: "PARK",
-  //     latitude: 37.6816,
-  //     longitude: 126.7551,
-  //   },
-  //   {
-  //     id: 18,
-  //     locationName: "밤리단길 카페메노",
-  //     type: "CAFE",
-  //     latitude: 37.6727,
-  //     longitude: 126.7737,
-  //   },
-  //   {
-  //     id: 19,
-  //     locationName: "LAKE",
-  //     type: "CAFE",
-  //     latitude: 37.672,
-  //     longitude: 126.7589,
-  //   },
-  // ];
-
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
         (position) => {
-          setCenter({
-            lng: position.coords.longitude,
-            lat: position.coords.latitude,
-          });
+          const { latitude, longitude } = position.coords;
+          if (!isNaN(latitude) && !isNaN(longitude)) {
+            setCenter({
+              lat: latitude,
+              lng: longitude,
+            });
+          } else {
+            console.error("Invalid geolocation data");
+          }
         },
         (error) => console.error("Geolocation error:", error),
         { enableHighAccuracy: true }
@@ -251,9 +165,9 @@ const GoogleMaps = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
+  // useEffect(() => {
+  //   console.log("selected", selected);
+  // }, [selected]);
 
   const handleMapClick = () => {
     setSelected(null);
@@ -264,7 +178,7 @@ const GoogleMaps = () => {
     <div>
       {selected ? (
         <BottomSheet
-          spotId={selected.id}
+          spotId={selected.spotId}
           closeFn={setSelected}
           name={selected.key}
           loc={selected.location}
@@ -281,7 +195,7 @@ const GoogleMaps = () => {
             1시간내 거리
           </span>
           <span className="c1" style={{ color: "var(--blue-200)" }}>
-            {locations.length}개
+            {spots.length}개
           </span>
         </BlackInfo>
       </InfoBox>

@@ -12,10 +12,9 @@ const PoiMarker = ({
   selectedPoiKey,
   isDestination,
   type,
+  spotId,
 }) => {
   const [circleCenter, setCircleCenter] = useState(null);
-
-  // console.log(name);
 
   let assetURL;
 
@@ -38,6 +37,7 @@ const PoiMarker = ({
       const selectedPoi = {
         key: poiKey,
         location: { lat: ev.latLng.lat(), lng: ev.latLng.lng() },
+        spotId: spotId,
       };
 
       clickFn(selectedPoi); // 지도에서 클릭한 장소를 선택하는 함수

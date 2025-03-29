@@ -164,6 +164,7 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
   const [expanded, setExpanded] = useState(false);
   const [curLocation, setCurLocation] = useState("");
   const setDestination = useSetRecoilState(destinationState);
+  const [spotDetail, setSpotDetail] = useState({});
 
   const [meters, setMeters] = useState(0);
 
@@ -197,6 +198,13 @@ const BottomSheet = ({ spotId, closeFn, name, loc, map, center, type }) => {
         `Calculated distance: ${Math.round(distanceInMeters)} meters`
       );
     }
+
+    const fetchSpotDetail = async () => {
+      const response = await getSpotDetail(spotId);
+      setSpotDetail(response);
+    };
+
+    fetchSpotDetail();
   }, [loc, center]);
 
   const currentTime = new Date().toISOString();

@@ -31,7 +31,7 @@ function App() {
           (position) => {
             const { latitude, longitude } = position.coords;
             // 권한이 허용되면 위치를 저장
-            setGeolocation({ latitude, longitude });
+            setGeolocation({ lat: latitude, lng: longitude });
             setLocationPermissionGranted(true); // 위치 권한 허용 여부 상태 업데이트
           },
           (error) => {
